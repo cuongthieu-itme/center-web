@@ -14,11 +14,12 @@ import {
 } from "../../ui/sidebar";
 import LogoutDialog from "./logout-dialog";
 import NavMain from "./nav-main";
+import { Role } from "@/types";
 
 export default function Asidebar() {
   const [open, setIsOpen] = useState(false);
   const { user } = useAuthStore();
-  const authRole = user?.role;
+  const authRole = user?.role as Role;
   
   return (
     <>

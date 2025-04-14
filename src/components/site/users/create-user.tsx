@@ -33,8 +33,7 @@ import { BadgePlus } from "lucide-react";
 import {
   SidebarGroup,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+  SidebarMenuItem
 } from "../../ui/sidebar";
 
 export default function CreateUser() {
@@ -74,10 +73,10 @@ export default function CreateUser() {
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton>
+              <Button variant="default">
                 <BadgePlus />
-                Create User
-              </SidebarMenuButton>
+                Tạo mới
+              </Button>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>

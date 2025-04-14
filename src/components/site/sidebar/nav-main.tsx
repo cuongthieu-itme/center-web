@@ -29,7 +29,7 @@ export default function NavMain({
   };
 
   // Use the ADMIN role or the new admin role
-  const isAdmin = role === "ADMIN" || role === "admin";
+  const isAdmin = role === "admin";
   const routes = isAdmin ? AdminView : ManagerView;
 
   return (

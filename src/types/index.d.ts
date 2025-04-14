@@ -1,6 +1,6 @@
 // Current roles in the system are "ADMIN" and "MANAGER"
 // Future desired roles are "admin", "teacher", "student"
-export type Role = 'admin' | 'teacher' | 'student' | 'ADMIN' | 'MANAGER';
+export type Role = 'admin' | 'teacher' | 'student';
 
 export type UserType = {
   id: number;
