@@ -1,22 +1,24 @@
 import { z } from "zod";
 
-export const emailSchema = z
+const emailSchema = z
   .string()
   .trim()
-  .email("Please enter a valid email address.")
-  .min(1)
-  .max(255);
+  .min(1, "Vui lòng nhập email")
+  .email("Email không hợp lệ");
 
-export const passwordSchema = z
+const passwordSchema = z
   .string()
   .trim()
-  .min(4, { message: "Please check your password." });
+  .min(1, "Vui lòng nhập mật khẩu")
+  .min(8, "Mật khẩu phải có ít nhất 8 ký tự");
 
 export const registerSchema = z.object({
-  username: z.string().trim().min(1).max(255),
+  name: z.string().trim().min(1, "Vui lòng nhập tên").max(255, "Tên quá dài"),
   email: emailSchema,
   password: passwordSchema,
-  role: z.enum(["admin", "teacher", "student"]),
+  role: z.enum(["admin", "teacher", "student"], {
+    errorMap: () => ({ message: "Vui lòng chọn vai trò" }),
+  }),
 });
 
 export const loginSchema = z.object({

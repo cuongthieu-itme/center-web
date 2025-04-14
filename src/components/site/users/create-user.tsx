@@ -30,6 +30,12 @@ import {
 } from "@/components/ui/select";
 import { registerSchema, RegisterSchemaType } from "@/validations/auth.schema";
 import { BadgePlus } from "lucide-react";
+import {
+  SidebarGroup,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "../../ui/sidebar";
 
 export default function CreateUser() {
   const [open, setOpen] = useState(false);
@@ -37,8 +43,8 @@ export default function CreateUser() {
   const form = useForm<RegisterSchemaType>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: "",
       email: "",
-      username: "",
       password: "123123",
       role: "student",
     },
@@ -48,9 +54,9 @@ export default function CreateUser() {
   useEffect(() => {
     if (open) {
       form.reset({
+        name: "",
         email: "",
-        username: "",
-        password: "123123",
+        password: "123456789",
         role: "student",
       });
     }
@@ -65,12 +71,16 @@ export default function CreateUser() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button 
-          className="bg-primary hover:bg-primary/90 text-white font-medium px-4 py-2 rounded-md flex items-center gap-2 transition-all duration-200 shadow-sm hover:shadow-md"
-        >
-          <BadgePlus className="h-4 w-4" />
-          Tạo mới
-        </Button>
+        <SidebarGroup>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton>
+                <BadgePlus />
+                Create User
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
@@ -83,7 +93,7 @@ export default function CreateUser() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="username"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-medium">Tên người dùng</FormLabel>

@@ -9,7 +9,7 @@ export type OrderType = {
   totalAmount?: number;
   managerId: number | null;
   manager: {
-    username: string | null;
+    name: string | null;
   } | null;
 };
 
@@ -36,7 +36,7 @@ export const columns: ColumnDef<OrderType>[] = [
     header: "Manager ID",
   },
   {
-    accessorKey: "manager.username",
+    accessorKey: "manager.name",
     header: "Manager",
   },
   {
@@ -59,7 +59,7 @@ export const columns: ColumnDef<OrderType>[] = [
       return (
         <AssignManager
           id={row.original.id}
-          username={manager?.username || "Unassigned"}
+          name={manager?.name || "Unassigned"}
           managerId={row.original.managerId ?? null}
         />
       );

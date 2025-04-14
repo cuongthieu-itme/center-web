@@ -41,9 +41,9 @@ export default function BulkAssignOrders() {
     }
   };
 
-  const handleSelectChange = (username: string) => {
-    // Find the managerId corresponding to the selected username
-    const manager = managers.find((manager) => manager.username === username);
+  const handleSelectChange = (name: string) => {
+    // Find the managerId corresponding to the selected name
+    const manager = managers.find((manager) => manager.name === name);
     if (manager) {
       setSelectedManagerId(manager.id);
     }
@@ -74,8 +74,8 @@ export default function BulkAssignOrders() {
           </SelectTrigger>
           <SelectContent>
             {managers.map((manager) => (
-              <SelectItem value={manager.username} key={manager.id}>
-                {manager.username}
+              <SelectItem value={manager.name} key={manager.id}>
+                {manager.name}
               </SelectItem>
             ))}
           </SelectContent>

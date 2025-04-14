@@ -14,7 +14,7 @@ interface initialState {
   ) => void;
   getAllOrderForManager: () => void;
   createOrder: ({ totalAmount, items }: CreateOrderType) => void;
-  updateOrders: (id: number, managerId: number, username: string) => void;
+  updateOrders: (id: number, managerId: number, name: string) => void;
 }
 
 export const useOrderStore = create<initialState>((set) => ({
@@ -68,7 +68,7 @@ export const useOrderStore = create<initialState>((set) => ({
       }
     }
   },
-  updateOrders: (id: number, managerId: number, username: string) => {
+  updateOrders: (id: number, managerId: number, name: string) => {
     set((state) => ({
       orders: state.orders.map((order) =>
         order.id === id
@@ -77,7 +77,7 @@ export const useOrderStore = create<initialState>((set) => ({
               managerId,
               manager: {
                 ...order.manager,
-                username,
+                name,
               },
             }
           : order

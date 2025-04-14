@@ -37,16 +37,16 @@ export const useAdminStore = create<initialState>((set, get) => ({
   createUser: async ({
     email,
     password,
-    username,
+    name,
     role,
   }: RegisterSchemaType) => {
     set({ loading: true });
 
     try {
-      const response = await axiosInstace.post("/admin/create-user", {
+      const response = await axiosInstace.post("/users", {
         email,
         password,
-        username,
+        name,
         role,
       });
       if (response.status === 201) {

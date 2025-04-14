@@ -5,7 +5,7 @@ export type Role = 'admin' | 'teacher' | 'student' | 'ADMIN' | 'MANAGER';
 export type UserType = {
   id: number;
   email: string;
-  username: string;
+  name: string;
   role: string;
   created_at: string;
   updated_at: string;
