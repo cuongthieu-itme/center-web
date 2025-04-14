@@ -10,7 +10,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAdminStore } from "@/stores/useAdminStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -31,12 +30,6 @@ import {
 } from "@/components/ui/select";
 import { registerSchema, RegisterSchemaType } from "@/validations/auth.schema";
 import { BadgePlus } from "lucide-react";
-import {
-  SidebarGroup,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "../../ui/sidebar";
 
 export default function CreateUser() {
   const [open, setOpen] = useState(false);
@@ -46,44 +39,56 @@ export default function CreateUser() {
     defaultValues: {
       email: "",
       username: "",
-      password: "",
-      role: "MANAGER",
+      password: "123123",
+      role: "student",
     },
   });
+  
+  // Reset form when dialog opens
+  useEffect(() => {
+    if (open) {
+      form.reset({
+        email: "",
+        username: "",
+        password: "123123",
+        role: "student",
+      });
+    }
+  }, [open, form]);
+  
   const onSubmit = (values: RegisterSchemaType) => {
     createUser(values);
-    form?.reset();
-    setOpen(!open);
+    form.reset();
+    setOpen(false);
   };
+  
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <SidebarGroup>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton>
-                <BadgePlus />
-                Create User
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarGroup>
+        <Button 
+          className="bg-primary hover:bg-primary/90 text-white font-medium px-4 py-2 rounded-md flex items-center gap-2 transition-all duration-200 shadow-sm hover:shadow-md"
+        >
+          <BadgePlus className="h-4 w-4" />
+          Tạo mới
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
-          <DialogTitle className="text-3xl">Create user</DialogTitle>
-          <DialogDescription></DialogDescription>
+          <DialogTitle className="text-3xl font-bold">Tạo người dùng mới</DialogTitle>
+          <DialogDescription className="text-muted-foreground">
+            Điền thông tin để tạo người dùng mới trong hệ thống
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel className="font-medium">Tên người dùng</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} placeholder="Nhập tên người dùng" autoComplete="off" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -94,9 +99,9 @@ export default function CreateUser() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="font-medium">Email</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} placeholder="Nhập email" type="email" autoComplete="off" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -107,9 +112,16 @@ export default function CreateUser() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mật khẩu</FormLabel>
+                  <FormLabel className="font-medium">Mật khẩu</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input 
+                      {...field} 
+                      placeholder="Mật khẩu mặc định" 
+                      type="password" 
+                      autoComplete="new-password" 
+                      disabled 
+                      className="bg-muted"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -120,27 +132,39 @@ export default function CreateUser() {
               name="role"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Role</FormLabel>
+                  <FormLabel className="font-medium">Vai trò</FormLabel>
                   <FormControl>
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Role" />
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Chọn vai trò" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="ADMIN">ADMIN</SelectItem>
-                        <SelectItem value="MANAGER">MANAGER</SelectItem>
+                        <SelectItem value="admin">Quản trị viên</SelectItem>
+                        <SelectItem value="teacher">Giáo viên</SelectItem>
+                        <SelectItem value="student">Học sinh</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
                 </FormItem>
               )}
             />
-            <FormDescription className="pt-4">
-              Please fill in all the fields
-            </FormDescription>
-            <Button type="submit" disabled={loading}>
-              Submit
-            </Button>
+            <div className="flex justify-end gap-3 pt-4">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => setOpen(false)}
+                className="px-4"
+              >
+                Hủy
+              </Button>
+              <Button 
+                type="submit" 
+                disabled={loading}
+                className="bg-primary hover:bg-primary/90 text-white px-4"
+              >
+                {loading ? "Đang tạo..." : "Tạo mới"}
+              </Button>
+            </div>
           </form>
         </Form>
       </DialogContent>

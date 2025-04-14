@@ -2,15 +2,14 @@
 // Future desired roles are "admin", "teacher", "student"
 export type Role = 'admin' | 'teacher' | 'student' | 'ADMIN' | 'MANAGER';
 
-export interface UserType {
+export type UserType = {
   id: number;
-  name: string;
   email: string;
-  email_verified_at: string | null;
-  role: Role;
+  username: string;
+  role: string;
   created_at: string;
   updated_at: string;
-}
+};
 
 export interface PaginatedResponse<T> {
   current_page: number;

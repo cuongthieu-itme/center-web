@@ -2,9 +2,8 @@ import { AxiosError } from "axios";
 import { toast } from "sonner";
 import { create } from "zustand";
 import axiosInstace from "../lib/axios";
-import { PaginatedResponse, ProductType, UserType } from "../types";
+import { PaginatedResponse, UserType } from "../types";
 import { RegisterSchemaType } from "../validations/auth.schema";
-import { productSchemaType } from "../validations/product.schema";
 
 interface initialState {
   loading: boolean;
@@ -17,15 +16,10 @@ interface initialState {
     from: number;
     to: number;
   };
-  products: ProductType[];
   createUser: (values: RegisterSchemaType) => void;
   getAllUsers: (page?: number) => void;
   deleteUser: (id: number) => void;
   updateRole: (id: number) => void;
-  createProduct: (values: productSchemaType) => void;
-  getallProducts: () => void;
-  deleteProduct: (id: number) => void;
-  updateStock: (id: number, stock: number) => void;
 }
 
 export const useAdminStore = create<initialState>((set, get) => ({
@@ -39,7 +33,6 @@ export const useAdminStore = create<initialState>((set, get) => ({
     from: 0,
     to: 0,
   },
-  products: [],
 
   createUser: async ({
     email,
@@ -133,68 +126,5 @@ export const useAdminStore = create<initialState>((set, get) => ({
         toast.error("An error occured");
       }
     }
-  },
-  createProduct: async ({
-    name,
-    description,
-    stock,
-    price,
-  }: productSchemaType) => {
-    set({ loading: true });
-
-    try {
-      const response = await axiosInstace.post("/admin/create-product", {
-        name,
-        description,
-        stock: parseInt(stock),
-        price: parseInt(price),
-      });
-      if (response.status === 201) {
-        toast.success(response.data.message);
-        get().getallProducts();
-      }
-    } catch (error: unknown) {
-      console.log(error);
-      set({ loading: false });
-      if (error instanceof AxiosError) {
-        toast.error(error?.response?.data?.message || "An error occured");
-      } else {
-        toast.error("An error occured");
-      }
-    }
-  },
-  deleteProduct: async (id: number) => {
-    try {
-      const response = await axiosInstace.delete(`/admin/delete-product/${id}`);
-      if (response.status === 200) {
-        toast.success(response.data.message);
-        get().getallProducts();
-      }
-    } catch (error: unknown) {
-      if (error instanceof AxiosError) {
-        toast.error(error?.response?.data?.message || "An error occured");
-      } else {
-        toast.error("An error occured");
-      }
-    }
-  },
-  getallProducts: async () => {
-    try {
-      const response = await axiosInstace.get(`/admin/all-products`);
-      set({ products: response.data.data });
-    } catch (error: unknown) {
-      if (error instanceof AxiosError) {
-        toast.error(error?.response?.data?.message || "An error occured");
-      } else {
-        toast.error("An error occured");
-      }
-    }
-  },
-  updateStock: (id: number, stock: number) => {
-    set((state) => ({
-      products: state.products.map((product) =>
-        product.id === id ? { ...product, stock } : product
-      ),
-    }));
   },
 }));

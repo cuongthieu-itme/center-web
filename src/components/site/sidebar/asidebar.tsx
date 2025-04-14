@@ -12,10 +12,6 @@ import {
   SidebarHeader,
   SidebarMenu,
 } from "../../ui/sidebar";
-import BulkAssignOrders from "../orders/bulk-assign-orders";
-import CreateOrder from "../orders/create-order";
-import CreateProduct from "../products/create-product";
-import CreateUser from "../users/create-user";
 import LogoutDialog from "./logout-dialog";
 import NavMain from "./nav-main";
 
@@ -23,9 +19,6 @@ export default function Asidebar() {
   const [open, setIsOpen] = useState(false);
   const { user } = useAuthStore();
   const authRole = user?.role;
-  
-  // Helper function to check if user is admin (works with both old and new role systems)
-  const isAdmin = authRole === "ADMIN" || authRole === "admin";
   
   return (
     <>
@@ -38,19 +31,6 @@ export default function Asidebar() {
             <SidebarGroupContent>
               <NavMain role={authRole} />
               <Separator />
-            </SidebarGroupContent>
-          </SidebarGroup>
-
-          <SidebarGroup>
-            {isAdmin && (
-              <SidebarGroupContent>
-                <CreateUser />
-                <CreateProduct />
-                <BulkAssignOrders />
-              </SidebarGroupContent>
-            )}
-            <SidebarGroupContent>
-              <CreateOrder />
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
