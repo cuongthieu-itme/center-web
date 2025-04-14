@@ -29,11 +29,11 @@ export default function UserActionMenu({ id }: { id: number }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={handleDeleteUser}>
-          Delete User
+          Xóa
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleToggleRole}>
-          Toggle Role
+          Chỉnh sửa
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

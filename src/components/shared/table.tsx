@@ -83,7 +83,7 @@ export function DataTable<TData, TValue>({
       <div className="flex justify-between py-3">
         <div>
           <Input
-            placeholder={`Filter ${filterName}...`}
+            placeholder={`Tìm kiếm ${filterName}...`}
             value={
               (table.getColumn(`${filterName}`)?.getFilterValue() as string) ??
               ""
@@ -100,7 +100,7 @@ export function DataTable<TData, TValue>({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
-                Columns
+                Lọc cột
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -136,9 +136,9 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -178,7 +178,7 @@ export function DataTable<TData, TValue>({
       <div className="mb-10 flex items-center justify-end px-2">
         <div className="flex items-center space-x-6 pt-2 lg:space-x-8">
           <div className="flex items-center space-x-2">
-            <p className="text-sm font-medium">Rows per page</p>
+            <p className="text-sm font-medium">Số lượng hàng mỗi trang</p>
             <Select
               value={`${table.getState().pagination.pageSize}`}
               onValueChange={(value) => {
@@ -200,8 +200,7 @@ export function DataTable<TData, TValue>({
             </Select>
           </div>
           <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
+            Trang {table.getState().pagination.pageIndex + 1} trong {table.getPageCount()}
           </div>
           <div className="flex items-center space-x-2">
             <Button

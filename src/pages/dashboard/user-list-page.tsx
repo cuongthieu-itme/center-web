@@ -5,7 +5,7 @@ import { useAdminStore } from "@/stores/useAdminStore";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const filterName = "role";
+const filterName = "chức vụ";
 
 export default function UserListPage() {
   const { getAllUsers, users, usersPagination, loading } = useAdminStore();
@@ -48,7 +48,7 @@ export default function UserListPage() {
           {usersPagination.total > 0 && (
             <div className="flex justify-between items-center mt-4">
               <div className="text-sm text-muted-foreground">
-                Showing {usersPagination.from} to {usersPagination.to} of {usersPagination.total} results
+                Hiển thị {usersPagination.from} đến {usersPagination.to} trong {usersPagination.total} kết quả
               </div>
 
               <div className="flex items-center gap-2">
@@ -59,7 +59,7 @@ export default function UserListPage() {
                   disabled={currentPage === 1}
                 >
                   <ChevronLeft className="h-4 w-4 mr-1" />
-                  Previous
+                  Trước đó
                 </Button>
 
                 <div className="flex items-center justify-center w-12 h-8 rounded-md border">
@@ -72,7 +72,7 @@ export default function UserListPage() {
                   onClick={handleNextPage}
                   disabled={currentPage === usersPagination.last_page}
                 >
-                  Next
+                  Kế tiếp
                   <ChevronRight className="h-4 w-4 ml-1" />
                 </Button>
               </div>
