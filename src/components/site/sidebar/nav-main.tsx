@@ -5,13 +5,13 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { AdminView, ManagerView } from "@/lib/constants";
-import { ItemType } from "@/types";
+import { ItemType, Role } from "@/types";
 import { Link, useLocation } from "react-router-dom";
 
 export default function NavMain({
   role,
 }: {
-  role: "ADMIN" | "MANAGER" | undefined;
+  role: Role | undefined;
 }) {
   const { pathname } = useLocation();
 
@@ -28,7 +28,9 @@ export default function NavMain({
     ));
   };
 
-  const routes = role === "ADMIN" ? AdminView : ManagerView;
+  // Use the ADMIN role or the new admin role
+  const isAdmin = role === "ADMIN" || role === "admin";
+  const routes = isAdmin ? AdminView : ManagerView;
 
   return (
     <SidebarGroup>

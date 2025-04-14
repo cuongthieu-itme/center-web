@@ -7,20 +7,18 @@ import {
 } from "@/components/ui/select";
 import { useManagerStore } from "@/stores/useManagerStore";
 import { useEffect, useState } from "react";
-import useSocket from "../../../hooks/user-socket";
 import { useOrderStore } from "../../../stores/useOrderStore";
 
 export default function AssignManager({
   id,
-  username,
+  name,
 }: {
   id: number;
-  username: string;
+  name: string;
   managerId: number | null;
 }) {
   const { managers, getAllManagers } = useManagerStore();
-  const { socket } = useSocket();
-  const [selectedUsername, setSelectedUsername] = useState(username);
+  const [selectedName, setSelectedName] = useState(name);
   const { updateOrders } = useOrderStore();
 
   //when bulk route is disabled this effect is needed to disable managers
@@ -28,40 +26,27 @@ export default function AssignManager({
     getAllManagers();
   }, [getAllManagers]);
 
-  useEffect(() => {
-    socket?.on("assignorderupdated", (uorder) => {
-      updateOrders(uorder.id, uorder.managerId, uorder.manager.username);
-    });
-
-    return () => {
-      socket?.off("assignorderupdated");
-    };
-  }, [socket, updateOrders]);
-
-  //real time assigning order
-  const handleAssignOrder = (newManagerUsername: string) => {
+  //direct assigning order
+  const handleAssignOrder = (newManagerName: string) => {
     const selectedManager = managers.find(
-      (manager) => manager.username === newManagerUsername
+      (manager) => manager.name === newManagerName
     );
 
-    if (selectedManager && socket) {
-      socket.emit("assignorder", {
-        orderId: id,
-        managerId: selectedManager.id,
-      });
-      setSelectedUsername(newManagerUsername);
+    if (selectedManager) {
+      updateOrders(id, selectedManager.id, newManagerName);
+      setSelectedName(newManagerName);
     }
   };
 
   return (
-    <Select value={selectedUsername} onValueChange={handleAssignOrder}>
+    <Select value={selectedName} onValueChange={handleAssignOrder}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select Manager" />
       </SelectTrigger>
       <SelectContent>
         {managers.map((manager) => (
-          <SelectItem value={manager.username} key={manager.id}>
-            {manager.username}
+          <SelectItem value={manager.name} key={manager.id}>
+            {manager.name}
           </SelectItem>
         ))}
       </SelectContent>

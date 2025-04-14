@@ -23,6 +23,10 @@ export default function Asidebar() {
   const [open, setIsOpen] = useState(false);
   const { user } = useAuthStore();
   const authRole = user?.role;
+  
+  // Helper function to check if user is admin (works with both old and new role systems)
+  const isAdmin = authRole === "ADMIN" || authRole === "admin";
+  
   return (
     <>
       <Sidebar>
@@ -38,7 +42,7 @@ export default function Asidebar() {
           </SidebarGroup>
 
           <SidebarGroup>
-            {authRole === "ADMIN" && (
+            {isAdmin && (
               <SidebarGroupContent>
                 <CreateUser />
                 <CreateProduct />

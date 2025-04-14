@@ -5,9 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useSocket from "@/hooks/user-socket";
 import { useOrderStore } from "@/stores/useOrderStore";
-import { useEffect } from "react";
 
 type StatusType = "PENDING" | "COMPLETED" | "CANCELLED";
 
@@ -18,24 +16,10 @@ export default function StatusSelect({
   id: number;
   status: StatusType;
 }) {
-  const { socket } = useSocket();
   const { updateOrderStatus } = useOrderStore();
 
-  //updates status in realtime
-  useEffect(() => {
-    socket?.on("statusUpdated", (updatedOrder) => {
-      updateOrderStatus(updatedOrder.id, updatedOrder.status);
-    });
-
-    return () => {
-      socket?.off("statusUpdated");
-    };
-  }, [socket, updateOrderStatus]);
-
   const handleStatusChange = (newStatus: StatusType) => {
-    if (socket) {
-      socket.emit("updateStatus", { id: id, status: newStatus });
-    }
+    updateOrderStatus(id, newStatus);
   };
 
   return (
