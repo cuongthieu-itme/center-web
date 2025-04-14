@@ -2,16 +2,24 @@ import { AxiosError } from "axios";
 import { toast } from "sonner";
 import { create } from "zustand";
 import axiosInstace from "../lib/axios";
-import { ProductType } from "../types";
+import { PaginatedResponse, ProductType, UserType } from "../types";
 import { RegisterSchemaType } from "../validations/auth.schema";
 import { productSchemaType } from "../validations/product.schema";
 
 interface initialState {
   loading: boolean;
-  users: [];
+  users: UserType[];
+  usersPagination: {
+    current_page: number;
+    last_page: number;
+    total: number;
+    per_page: number;
+    from: number;
+    to: number;
+  };
   products: ProductType[];
   createUser: (values: RegisterSchemaType) => void;
-  getAllUsers: () => void;
+  getAllUsers: (page?: number) => void;
   deleteUser: (id: number) => void;
   updateRole: (id: number) => void;
   createProduct: (values: productSchemaType) => void;
@@ -23,6 +31,14 @@ interface initialState {
 export const useAdminStore = create<initialState>((set, get) => ({
   loading: false,
   users: [],
+  usersPagination: {
+    current_page: 1,
+    last_page: 1,
+    total: 0,
+    per_page: 20,
+    from: 0,
+    to: 0,
+  },
   products: [],
 
   createUser: async ({
@@ -53,10 +69,24 @@ export const useAdminStore = create<initialState>((set, get) => ({
       }
     }
   },
-  getAllUsers: async () => {
+  getAllUsers: async (page = 1) => {
+    set({ loading: true });
     try {
-      const response = await axiosInstace.get("/admin/view-all-users");
-      set({ users: response.data.data });
+      const response = await axiosInstace.get(`/users?page=${page}`);
+      const paginatedData = response.data as PaginatedResponse<UserType>;
+      
+      set({ 
+        users: paginatedData.data,
+        usersPagination: {
+          current_page: paginatedData.current_page,
+          last_page: paginatedData.last_page,
+          total: paginatedData.total,
+          per_page: paginatedData.per_page,
+          from: paginatedData.from,
+          to: paginatedData.to,
+        },
+        loading: false
+      });
     } catch (error: unknown) {
       set({ loading: false });
       if (error instanceof AxiosError) {

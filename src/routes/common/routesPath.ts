@@ -1,5 +1,5 @@
 export const AUTH_ROUTES = {
-  LOGIN: "/",
+  LOGIN: "/login",
 };
 
 export const PROTECTED_ROUTES = {

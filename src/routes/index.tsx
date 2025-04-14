@@ -9,14 +9,18 @@ export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* if user is already logged in it will navigates to dashboard */}
-        <Route path="/" element={<AuthRoute />}>
+        {/* Root redirect to dashboard if authenticated, otherwise to login */}
+        <Route path="/" element={<AuthRoute />} />
+        
+        {/* Authentication routes */}
+        <Route element={<AuthRoute />}>
           {authenticationRoutes.map((route) => (
             <Route key={route.path} path={route.path} element={route.element} />
           ))}
         </Route>
-        {/* Protected Route */}
-        <Route path="/" element={<ProtectedRoute />}>
+        
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>
             {protectedRoutes.map((route) => (
               <Route
@@ -27,6 +31,7 @@ export default function AppRoutes() {
             ))}
           </Route>
         </Route>
+        
         {/* Catch-all for undefined routes */}
         <Route path="*" element={<NotFound />} />
       </Routes>

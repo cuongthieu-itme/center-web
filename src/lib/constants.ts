@@ -8,7 +8,7 @@ export const AdminView: ItemType[] = [
     icon: Package,
   },
   {
-    title: "View Users",
+    title: "Danh sách người dùng",
     url: `/dashboard/users-list`,
     icon: User,
   },

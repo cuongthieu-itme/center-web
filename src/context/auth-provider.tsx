@@ -1,10 +1,11 @@
-import { createContext, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useAuthStore } from "../stores/useAuthStore";
 import { UserType } from "../types";
 
 type AuthContextType = {
   user: UserType | null;
   isAuth: boolean;
+  loading: boolean;
 };
 
 interface AuthProviderProps {
@@ -16,15 +17,21 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 export default function AuthProvider({ children }: AuthProviderProps) {
-  const { checkAuth, user, isAuth } = useAuthStore();
+  const { checkAuth, user, isAuth, loading } = useAuthStore();
+  const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
-    checkAuth();
+    const verifyAuth = async () => {
+      await checkAuth();
+      setAuthChecked(true);
+    };
+
+    verifyAuth();
   }, [checkAuth]);
 
   return (
-    <AuthContext.Provider value={{ user, isAuth }}>
-      {children}
+    <AuthContext.Provider value={{ user, isAuth, loading }}>
+      {authChecked ? children : null}
     </AuthContext.Provider>
   );
 }
