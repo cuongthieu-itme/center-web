@@ -107,7 +107,7 @@ export default function CreateUser() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Mật khẩu</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>

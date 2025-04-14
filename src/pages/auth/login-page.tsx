@@ -47,7 +47,7 @@ export default function LoginPage() {
         <CardHeader className="text-3xl font-bold tracking-tight text-foreground">
           <div className="text-center">
             <h1 className="text-3xl font-bold tracking-wide text-foreground">
-              Welcome back
+              Trung tâm V-Eng
             </h1>
           </div>
         </CardHeader>
@@ -76,7 +76,7 @@ export default function LoginPage() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Mật khẩu</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="enter your password"
@@ -96,7 +96,7 @@ export default function LoginPage() {
                 className="w-full"
               >
                 {loading && <Loader className="animate-spin" />}
-                Login
+                Đăng nhập
               </Button>
             </form>
           </Form>

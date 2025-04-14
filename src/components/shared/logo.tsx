@@ -10,7 +10,7 @@ export default function Logo() {
     <div>
       <Link to="/dashboard/main-page" className="flex gap-2.5">
         <Gem />
-        <span className="font-bold tracking-wider">Ecommerce Dashboard</span>
+        <span className="font-bold tracking-wider">V-Eng</span>
       </Link>
     </div>
   );

@@ -7,6 +7,7 @@ import { LoginSchemaType } from "../validations/auth.schema";
 
 interface initialState {
   user: UserType | null;
+  token: string | null;
   loading: boolean;
   isAuth: boolean;
   login: (values: LoginSchemaType) => void;
@@ -16,6 +17,7 @@ interface initialState {
 
 export const useAuthStore = create<initialState>((set) => ({
   user: null,
+  token: null,
   loading: false,
   isAuth: true,
 
@@ -27,8 +29,17 @@ export const useAuthStore = create<initialState>((set) => ({
         email,
         password,
       });
-      set({ user: response.data.data, loading: false });
-      toast.success(response.data.message);
+
+      const { user, token } = response.data;
+
+      // Store token in localStorage
+      if (token) {
+        localStorage.setItem("auth_token", token);
+        axiosInstace.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      }
+
+      set({ user, token, loading: false });
+      toast.success("Login successful");
     } catch (error: unknown) {
       set({ loading: false });
       if (error instanceof AxiosError) {
@@ -40,25 +51,38 @@ export const useAuthStore = create<initialState>((set) => ({
       set({ loading: false });
     }
   },
+
   checkAuth: async () => {
     set({ isAuth: true });
     try {
-      const response = await axiosInstace.get("/auth/verify-auth");
-      set({ user: response.data.data, isAuth: false });
+      // Get token from localStorage
+      const token = localStorage.getItem("auth_token");
+
+      if (token) {
+        axiosInstace.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        const response = await axiosInstace.get("/auth/verify-auth");
+        set({ user: response.data.data, token, isAuth: true });
+      } else {
+        set({ isAuth: false, user: null, token: null });
+      }
     } catch (error) {
-      set({ isAuth: false, user: null });
+      set({ isAuth: false, user: null, token: null });
       if (error instanceof AxiosError) {
         return;
       }
-    } finally {
-      set({ isAuth: false });
     }
   },
+
   logout: async () => {
     set({ loading: true });
     try {
-      await axiosInstace.get("/auth/logout");
-      set({ user: null, loading: false });
+      await axiosInstace.post("/auth/logout");
+
+      // Remove token from localStorage and axios headers
+      localStorage.removeItem("auth_token");
+      delete axiosInstace.defaults.headers.common['Authorization'];
+
+      set({ user: null, token: null, loading: false });
     } catch (error) {
       if (error instanceof AxiosError) {
         return;

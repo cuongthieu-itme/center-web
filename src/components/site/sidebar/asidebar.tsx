@@ -52,14 +52,12 @@ export default function Asidebar() {
         </SidebarContent>
         <SidebarFooter>
           <SidebarMenu className="pl-4 font-bold space-y-1 uppercase">
-            <span>{user?.username}</span>
-            <Separator />
-            <span>{user?.email}</span>
+            <span>{user?.name}</span>
             <Separator />
           </SidebarMenu>
           <SidebarMenu>
             <Button variant={"default"} onClick={() => setIsOpen(true)}>
-              Logout
+              Đăng xuất
             </Button>
           </SidebarMenu>
         </SidebarFooter>

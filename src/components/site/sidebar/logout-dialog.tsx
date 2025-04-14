@@ -26,19 +26,18 @@ export default function LogoutDialog({ open, setIsOpen }: LogoutDialogProps) {
     <Dialog open={open} onOpenChange={setIsOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Are you sure you want to log out?</DialogTitle>
+          <DialogTitle>Bạn có chắc muốn đăng xuất không?</DialogTitle>
           <DialogDescription>
-            This will end your current session and you will need to log in again
-            to access your account.
+            Đăng xuất sẽ kết thúc phiên làm việc của bạn và bạn sẽ cần đăng nhập lại để truy cập tài khoản.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button disabled={loading} type="button" onClick={handleLogout}>
             {loading && <Loader className="animate-spin" />}
-            Log Out
+            Đăng xuất
           </Button>
           <Button type="button" onClick={() => setIsOpen(false)}>
-            Cancel
+            Hủy
           </Button>
         </DialogFooter>
       </DialogContent>
