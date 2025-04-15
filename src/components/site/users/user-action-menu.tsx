@@ -7,16 +7,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAdminStore } from "@/stores/useAdminStore";
+import { UserType } from "@/types";
 import { Ellipsis } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-export default function UserActionMenu({ id }: { id: number }) {
-  const { updateRole, deleteUser } = useAdminStore();
+export default function UserActionMenu({ user }: { user: UserType }) {
+  const { deleteUser } = useAdminStore();
+  const navigate = useNavigate();
 
   const handleDeleteUser = () => {
-    deleteUser(id);
+    deleteUser(user.id);
   };
-  const handleToggleRole = () => {
-    updateRole(id);
+
+  const handleViewDetail = () => {
+    navigate(`/users/${user.id}`);
   };
 
   return (
@@ -32,8 +36,8 @@ export default function UserActionMenu({ id }: { id: number }) {
           Xóa
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleToggleRole}>
-          Chỉnh sửa
+        <DropdownMenuItem onClick={handleViewDetail}>
+          Chi tiết
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

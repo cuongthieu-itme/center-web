@@ -20,6 +20,7 @@ interface initialState {
   getAllUsers: (page?: number) => void;
   deleteUser: (id: number) => void;
   updateRole: (id: number) => void;
+  getUserById: (id: number) => Promise<UserType | null>;
 }
 
 export const useAdminStore = create<initialState>((set, get) => ({
@@ -127,6 +128,22 @@ export const useAdminStore = create<initialState>((set, get) => ({
       } else {
         toast.error("An error occured");
       }
+    }
+  },
+  getUserById: async (id: number) => {
+    try {
+      const response = await axiosInstace.get(`/users/${id}`);
+      if (response.data) {
+        return response.data;
+      }
+      return null;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        toast.error(error?.response?.data?.message || "An error occured");
+      } else {
+        toast.error("An error occured");
+      }
+      return null;
     }
   },
 }));

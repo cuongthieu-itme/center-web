@@ -60,7 +60,7 @@ export const columns: ColumnDef<UserType>[] = [
     enableHiding: false,
     header: "Hành động",
     cell: ({ row }) => {
-      return <UserActionMenu id={row.original.id} />;
+      return <UserActionMenu user={row.original} />;
     },
   },
 ];

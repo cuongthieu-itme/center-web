@@ -14,7 +14,7 @@ export default function AppLayout() {
         <SidebarTrigger />
         <div className="w-full">
           <>
-            <div className="px-3 lg:px-20 py-3">
+            <div className="px-3 lg:px-20">
               <Outlet />
             </div>
           </>

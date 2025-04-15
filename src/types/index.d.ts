@@ -9,6 +9,7 @@ export type UserType = {
   role: string;
   created_at: string;
   updated_at: string;
+  avatar?: string;
 };
 
 export interface PaginatedResponse<T> {
@@ -35,10 +36,10 @@ export type OrderType = {
   id: number;
   status: "PENDING" | "COMPLETED" | "CANCELLED";
   totalAmount?: number;
+  managerId: number | null;
   manager: {
-    username: string;
-  };
-  managerId: number;
+    name: string | null;
+  } | null;
 };
 
 export type ItemType = {
