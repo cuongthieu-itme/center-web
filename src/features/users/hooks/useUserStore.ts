@@ -7,17 +7,20 @@ interface UserState {
   loading: boolean;
   users: User[];
   usersPagination: UserPagination;
+  selectedRole: string | null;
   createUser: (values: UserFormData) => Promise<void>;
-  getAllUsers: (page?: number) => Promise<void>;
+  getAllUsers: (page?: number, role?: string) => Promise<void>;
   deleteUser: (id: number) => Promise<void>;
   updateRole: (id: number) => Promise<void>;
   getUserById: (id: number) => Promise<User | null>;
   updateUser: (id: number, user: Partial<User>) => Promise<void>;
+  setSelectedRole: (role: string | null) => void;
 }
 
 export const useUserStore = create<UserState>((set, get) => ({
   loading: false,
   users: [],
+  selectedRole: null,
   usersPagination: {
     current_page: 1,
     last_page: 1,
@@ -27,24 +30,30 @@ export const useUserStore = create<UserState>((set, get) => ({
     to: 0,
   },
 
+  setSelectedRole: (role: string | null) => {
+    set({ selectedRole: role });
+  },
+
   createUser: async (values: UserFormData) => {
     set({ loading: true });
     try {
       const response = await userService.createUser(values);
       toast.success(response.message);
       get().getAllUsers();
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message || "An error occurred");
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
     } finally {
       set({ loading: false });
     }
   },
 
-  getAllUsers: async (page = 1) => {
+  getAllUsers: async (page = 1, role?: string) => {
     if (get().loading) return;
     set({ loading: true });
     try {
-      const response = await userService.getAllUsers(page);
+      const roleToUse = role || get().selectedRole;
+      const response = await userService.getAllUsers(page, roleToUse || undefined);
       set({ 
         users: response.data,
         usersPagination: {
@@ -56,8 +65,9 @@ export const useUserStore = create<UserState>((set, get) => ({
           to: response.to,
         },
       });
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message || "An error occurred");
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
     } finally {
       set({ loading: false });
     }
@@ -68,9 +78,10 @@ export const useUserStore = create<UserState>((set, get) => ({
     try {
       const response = await userService.deleteUser(id);
       toast.success(response.message);
-      get().getAllUsers();
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message || "An error occurred");
+      await get().getAllUsers();
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
     } finally {
       set({ loading: false });
     }
@@ -81,8 +92,9 @@ export const useUserStore = create<UserState>((set, get) => ({
       const response = await userService.updateRole(id);
       toast.success(response.message);
       get().getAllUsers();
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message || "An error occurred");
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
     }
   },
 
@@ -90,8 +102,9 @@ export const useUserStore = create<UserState>((set, get) => ({
     try {
       const response = await userService.getUserById(id);
       return response;
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message || "An error occurred");
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
       return null;
     }
   },
@@ -101,8 +114,9 @@ export const useUserStore = create<UserState>((set, get) => ({
       const response = await userService.updateUser(id, user);
       toast.success(response.message);
       return response;
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message || "An error occurred");
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
       throw error;
     }
   }

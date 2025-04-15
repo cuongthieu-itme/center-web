@@ -14,13 +14,14 @@ import { useUserStore } from "../hooks/useUserStore";
 import { User } from "../types";
 
 export default function UserActionMenu({ user }: { user: User }) {
-  const { deleteUser } = useUserStore();
+  const { deleteUser, getAllUsers } = useUserStore();
   const navigate = useNavigate();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const handleDeleteUser = async () => {
     try {
       await deleteUser(user.id);
+      await getAllUsers(1);
       setIsDeleteDialogOpen(false);
     } catch (error) {
       console.error("Error deleting user:", error);

@@ -2,8 +2,12 @@ import axiosInstance from "@/lib/axios";
 import { User, UserFormData } from "../types";
 
 export const userService = {
-  getAllUsers: async (page: number = 1) => {
-    const response = await axiosInstance.get(`/users?page=${page}`);
+  getAllUsers: async (page: number = 1, role?: string) => {
+    let url = `/users?page=${page}`;
+    if (role) {
+      url += `&role=${role}`;
+    }
+    const response = await axiosInstance.get(url);
     return response.data;
   },
 
@@ -18,12 +22,12 @@ export const userService = {
   },
 
   updateUser: async (id: number, userData: Partial<User>) => {
-    const response = await axiosInstance.put(`/users/${id}`, userData);
+    const response = await axiosInstance.patch(`/users/${id}`, userData);
     return response.data;
   },
 
   deleteUser: async (id: number) => {
-    const response = await axiosInstance.delete(`/admin/delete-user/${id}`);
+    const response = await axiosInstance.delete(`/users/${id}`);
     return response.data;
   },
 

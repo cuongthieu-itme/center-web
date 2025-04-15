@@ -1,7 +1,15 @@
 import { DataTable } from "@/components/shared/table";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useUserStore } from "../hooks/useUserStore";
 import CreateUser from "./CreateUser";
 import { columns } from "./UserColumns";
@@ -9,12 +17,15 @@ import { columns } from "./UserColumns";
 const filterName = "name";
 
 export default function UserList() {
-  const { getAllUsers, users, usersPagination, loading } = useUserStore();
+  const { getAllUsers, users, usersPagination, loading, setSelectedRole } = useUserStore();
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  
   useEffect(() => {
-    getAllUsers(currentPage);
-  }, [getAllUsers, currentPage]);
+    const roleParam = searchParams.get("role");
+    setSelectedRole(roleParam);
+    getAllUsers(currentPage, roleParam || undefined);
+  }, [getAllUsers, currentPage, searchParams, setSelectedRole]);
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
@@ -28,12 +39,38 @@ export default function UserList() {
     }
   };
 
+  const handleRoleChange = (value: string) => {
+    if (value === "all") {
+      searchParams.delete("role");
+      setSearchParams(searchParams);
+    } else {
+      setSearchParams({ ...Object.fromEntries(searchParams), role: value });
+    }
+    setCurrentPage(1);
+  };
+
   return (
     <div className="container mx-auto py-6">
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">Danh sách người dùng</h1>
-          <CreateUser />
+          <div className="flex gap-4">
+            <Select 
+              onValueChange={handleRoleChange} 
+              defaultValue={searchParams.get("role") || "all"}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Lọc theo vai trò" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tất cả</SelectItem>
+                <SelectItem value="admin">Quản trị viên</SelectItem>
+                <SelectItem value="teacher">Giáo viên</SelectItem>
+                <SelectItem value="student">Học sinh</SelectItem>
+              </SelectContent>
+            </Select>
+            <CreateUser />
+          </div>
         </div>
         <DataTable
           columns={columns}

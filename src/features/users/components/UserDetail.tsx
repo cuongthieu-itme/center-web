@@ -75,6 +75,25 @@ export default function UserDetail() {
     student: "Học sinh",
   }[user.role] || "Không xác định";
 
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return "N/A";
+      }
+      return new Intl.DateTimeFormat('vi-VN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }).format(date);
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return "N/A";
+    }
+  };
+
   return (
     <div className="container mx-auto">
       <div className="max-w-4xl mx-auto">
@@ -167,7 +186,7 @@ export default function UserDetail() {
                   <div>
                     <p className="text-sm text-muted-foreground">Ngày tạo</p>
                     <p className="text-sm font-medium mt-1">
-                      {new Date(user.createdAt).toLocaleDateString()}
+                      {formatDate(user.createdAt)}
                     </p>
                   </div>
                 </div>
