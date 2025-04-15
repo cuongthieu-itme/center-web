@@ -33,7 +33,7 @@ import { UserFormData } from "../types";
 
 export default function CreateUser() {
   const [open, setOpen] = useState(false);
-  const { createUser, loading } = useUserStore();
+  const { createUser, loading, getAllUsers } = useUserStore();
   const form = useForm<UserFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -43,6 +43,8 @@ export default function CreateUser() {
       role: "student",
     },
   });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Reset form when dialog opens
   useEffect(() => {
@@ -56,10 +58,19 @@ export default function CreateUser() {
     }
   }, [open, form]);
   
-  const onSubmit = (values: UserFormData) => {
-    createUser(values);
-    form.reset();
-    setOpen(false);
+  const onSubmit = async (values: UserFormData) => {
+    try {
+      setIsSubmitting(true);
+      await createUser(values);
+      // Explicitly refresh the users list on page 1 to show the new user
+      await getAllUsers(1);
+      form.reset();
+      setOpen(false);
+    } catch (error) {
+      console.error("Error creating user:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   return (
@@ -152,15 +163,16 @@ export default function CreateUser() {
                 variant="outline" 
                 onClick={() => setOpen(false)}
                 className="px-4"
+                disabled={isSubmitting}
               >
                 Hủy
               </Button>
               <Button 
                 type="submit" 
-                disabled={loading}
+                disabled={isSubmitting || loading}
                 className="bg-primary hover:bg-primary/90 text-white px-4"
               >
-                {loading ? "Đang tạo..." : "Tạo mới"}
+                {isSubmitting || loading ? "Đang tạo..." : "Tạo mới"}
               </Button>
             </div>
           </form>
