@@ -51,7 +51,7 @@ export const useAuthStore = create<initialState>((set) => ({
       }
 
       set({ user, token, loading: false, isAuth: true });
-      toast.success("Login successful");
+      toast.success("Đăng nhập thành công");
     } catch (error: unknown) {
       set({ loading: false, isAuth: false });
       if (error instanceof AxiosError) {

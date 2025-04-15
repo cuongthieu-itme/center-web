@@ -67,27 +67,6 @@ const Dashboard: React.FC = () => {
     ],
   };
 
-  // Dữ liệu mẫu cho biểu đồ tròn
-  const doughnutChartData = {
-    labels: ['Đã thanh toán', 'Chưa thanh toán', 'Đang xử lý'],
-    datasets: [
-      {
-        data: [300, 50, 100],
-        backgroundColor: [
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-        ],
-        borderColor: [
-          'rgba(75, 192, 192, 1)',
-          'rgba(255, 99, 132, 1)',
-          'rgba(255, 206, 86, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>

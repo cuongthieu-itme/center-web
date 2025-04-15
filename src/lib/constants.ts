@@ -1,7 +1,12 @@
-import { BookA, User } from "lucide-react";
+import { BookA, LayoutDashboard, User } from "lucide-react";
 import { ItemType } from "../types";
 
 export const AdminView: ItemType[] = [
+  {
+    title: "Tổng quan",
+    url: `/dashboard`,
+    icon: LayoutDashboard,
+  },
   {
     title: "Người dùng",
     url: `/users`,
