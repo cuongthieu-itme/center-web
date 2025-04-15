@@ -15,11 +15,22 @@ interface initialState {
   logout: () => void;
 }
 
-export const useAuthStore = create<initialState>((set, get) => ({
-  user: null,
-  token: null,
-  loading: false,
-  isAuth: false,
+// Initialize state from localStorage if available
+const getInitialState = () => {
+  const token = localStorage.getItem("token");
+  const userStr = localStorage.getItem("user");
+  const user = userStr ? JSON.parse(userStr) : null;
+  
+  return {
+    user,
+    token,
+    loading: false,
+    isAuth: !!token && !!user,
+  };
+};
+
+export const useAuthStore = create<initialState>((set) => ({
+  ...getInitialState(),
 
   login: async ({ email, password }: LoginSchemaType) => {
     set({ loading: true });
@@ -32,11 +43,11 @@ export const useAuthStore = create<initialState>((set, get) => ({
 
       const { user, token } = response.data;
 
-      // Store token in localStorage
-      if (token) {
-        localStorage.setItem("auth_token", token);
+      // Store token and user in localStorage
+      if (token && user) {
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
         axiosInstace.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        console.log("Token saved to localStorage and set in axios headers");
       }
 
       set({ user, token, loading: false, isAuth: true });
@@ -44,9 +55,9 @@ export const useAuthStore = create<initialState>((set, get) => ({
     } catch (error: unknown) {
       set({ loading: false, isAuth: false });
       if (error instanceof AxiosError) {
-        toast.error(error?.response?.data?.message || "An error occured");
+        toast.error(error?.response?.data?.message || "An error occurred");
       } else {
-        toast.error("An error occured");
+        toast.error("An error occurred");
       }
     } finally {
       set({ loading: false });
@@ -54,65 +65,47 @@ export const useAuthStore = create<initialState>((set, get) => ({
   },
 
   checkAuth: async () => {
-    console.log("Checking authentication...");
     set({ loading: true });
     try {
-      // Get token from localStorage
-      const token = localStorage.getItem("auth_token");
-      console.log("Token from localStorage:", token ? "Token exists" : "No token found");
+      const token = localStorage.getItem("token");
+      const userStr = localStorage.getItem("user");
+      const user = userStr ? JSON.parse(userStr) : null;
 
-      if (!token) {
-        console.log("No token found in localStorage, setting isAuth to false");
+      if (!token || !user) {
         set({ isAuth: false, user: null, token: null, loading: false });
         return false;
       }
       
-      // Set token in axios headers before making the request
       axiosInstace.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      console.log("Authorization header set for verify-auth request");
       
-      console.log("Calling /auth/verify-auth API...");
       const response = await axiosInstace.get("/auth/verify-auth");
-      console.log("verify-auth response:", response.status, response.data);
       
-      if (response.data && response.data.data) {
-        console.log("Authentication successful, user data received");
-        set({ user: response.data.data, token, isAuth: true, loading: false });
+      // If we get a successful response (status 200), keep the current state
+      if (response.status === 200) {
+        set({ isAuth: true, loading: false });
         return true;
-      } else {
-        console.log("Invalid response format from verify-auth API");
-        localStorage.removeItem("auth_token");
-        delete axiosInstace.defaults.headers.common['Authorization'];
-        set({ isAuth: false, user: null, token: null, loading: false });
-        return false;
       }
-    } catch (error) {
-      console.error("Error in checkAuth:", error);
-      localStorage.removeItem("auth_token");
+      
+      // If we get here, something went wrong with the verification
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
       delete axiosInstace.defaults.headers.common['Authorization'];
       set({ isAuth: false, user: null, token: null, loading: false });
-      
-      if (error instanceof AxiosError) {
-        console.error("AxiosError details:", {
-          status: error.response?.status,
-          statusText: error.response?.statusText,
-          data: error.response?.data
-        });
-        
-        if (error.response?.status === 401) {
-          console.log("Unauthorized: Token invalid or expired");
-        }
+      return false;
+    } catch (error) {
+      // Only clear localStorage if it's an authentication error
+      if (error instanceof AxiosError && error.response?.status === 401) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        delete axiosInstace.defaults.headers.common['Authorization'];
+        set({ isAuth: false, user: null, token: null, loading: false });
+      } else {
+        // For other errors, keep the current state
+        set({ loading: false });
       }
       return false;
     } finally {
-      // Double check that the current state is consistent
-      const currentState = get();
-      console.log("Auth state after check:", { 
-        isAuth: currentState.isAuth, 
-        hasUser: !!currentState.user,
-        hasToken: !!currentState.token,
-        loading: currentState.loading
-      });
+      set({ loading: false });
     }
   },
 
@@ -120,15 +113,13 @@ export const useAuthStore = create<initialState>((set, get) => ({
     set({ loading: true });
     try {
       await axiosInstace.post("/auth/logout");
-      console.log("Logout API call successful");
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
-      // Always clear local data regardless of API success
-      console.log("Clearing local auth data");
-      localStorage.removeItem("auth_token");
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
       delete axiosInstace.defaults.headers.common['Authorization'];
       set({ user: null, token: null, loading: false, isAuth: false });
     }
   },
-}))
+}));
