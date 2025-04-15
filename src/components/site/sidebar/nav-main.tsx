@@ -1,11 +1,12 @@
 import {
-  SidebarGroup,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+    SidebarGroup,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { AdminView, ManagerView } from "@/lib/constants";
 import { ItemType, Role } from "@/types";
+import { ClipboardCheck, School, User, Users } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 export default function NavMain({
@@ -34,7 +35,41 @@ export default function NavMain({
 
   return (
     <SidebarGroup>
-      <SidebarMenu>{renderRoutes(routes)}</SidebarMenu>
+      <SidebarMenu>
+        {renderRoutes(routes)}
+        <SidebarMenuItem>
+          <SidebarMenuButton isActive={pathname.startsWith("/teachers")} asChild>
+            <Link to="/teachers" className="flex gap-2 items-center">
+              <User />
+              <span>Giáo viên</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton isActive={pathname.startsWith("/students")} asChild>
+            <Link to="/students" className="flex gap-2 items-center">
+              <Users />
+              <span>Học sinh</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton isActive={pathname.startsWith("/classes")} asChild>
+            <Link to="/classes" className="flex gap-2 items-center">
+              <School />
+              <span>Lớp học</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton isActive={pathname.startsWith("/attendance")} asChild>
+            <Link to="/attendance" className="flex gap-2 items-center">
+              <ClipboardCheck />
+              <span>Điểm danh</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
     </SidebarGroup>
   );
 }
