@@ -18,6 +18,7 @@ const formatDate = (dateString: string) => {
       minute: '2-digit'
     }).format(date);
   } catch (error) {
+    console.error('Error formatting date:', error);
     return "N/A";
   }
 };
