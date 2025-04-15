@@ -1,11 +1,13 @@
+import { memo } from "react";
+import AuthProvider from "./context/auth-provider";
 import AppRoutes from "./routes";
-import AuthChecker from "./components/auth/auth-checker";
 
-export default function App() {
+function App() {
   return (
-    <>
-      <AuthChecker />
+    <AuthProvider>
       <AppRoutes />
-    </>
+    </AuthProvider>
   );
 }
+
+export default memo(App);

@@ -27,7 +27,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     };
 
     verifyAuth();
-  }, [checkAuth]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, isAuth, loading }}>

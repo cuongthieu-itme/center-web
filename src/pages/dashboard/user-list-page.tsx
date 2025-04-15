@@ -6,7 +6,7 @@ import { useAdminStore } from "@/stores/useAdminStore";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const filterName = "chức vụ";
+const filterName = "role";
 
 export default function UserListPage() {
   const { getAllUsers, users, usersPagination, loading } = useAdminStore();

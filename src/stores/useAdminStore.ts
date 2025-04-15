@@ -63,6 +63,8 @@ export const useAdminStore = create<initialState>((set, get) => ({
     }
   },
   getAllUsers: async (page = 1) => {
+    if (get().loading) return;
+    
     set({ loading: true });
     try {
       const response = await axiosInstace.get(`/users?page=${page}`);
