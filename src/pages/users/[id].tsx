@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAdminStore } from "@/stores/useAdminStore";
 import { UserType } from "@/types";
-import { Activity, ArrowLeft, Calendar, Mail, Shield } from "lucide-react";
+import { Activity, ArrowLeft, Calendar, Mail, Pencil, Shield } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -67,7 +67,13 @@ export default function UserDetailPage() {
           </Button>
           <Card>
             <CardContent className="pt-6 text-center">
-              <p className="text-red-500">{error}</p>
+              <div className="flex flex-col items-center gap-4">
+                <div className="text-6xl">😕</div>
+                <h2 className="text-2xl font-bold">Không tìm thấy người dùng</h2>
+                <p className="text-muted-foreground">
+                  Người dùng bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.
+                </p>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -99,12 +105,25 @@ export default function UserDetailPage() {
           {/* Profile Card */}
           <Card>
             <CardHeader className="border-b">
-              <CardTitle>Thông tin cá nhân</CardTitle>
+              <div className="flex justify-between items-center">
+                <CardTitle>Thông tin cá nhân</CardTitle>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => navigate(`/users/${id}/edit`)}
+                >
+                  <Pencil className="h-4 w-4 mr-2" />
+                  Chỉnh sửa
+                </Button>
+              </div>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="flex flex-col items-center gap-4">
                 <Avatar className="h-32 w-32">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarImage 
+                    src={user.avatar || "https://ui-avatars.com/api/?name=" + encodeURIComponent(user.name) + "&background=random"} 
+                    alt={user.name} 
+                  />
                   <AvatarFallback className="text-4xl">
                     {user.name.charAt(0)}
                   </AvatarFallback>

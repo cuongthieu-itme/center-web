@@ -10,6 +10,7 @@ const OrdersListPage = lazy(
 );
 const UserListPage = lazy(() => import("../../pages/dashboard/user-list-page"));
 const UserDetailPage = lazy(() => import("../../pages/users/[id]"));
+const EditUserPage = lazy(() => import("../../pages/users/[id]/edit"));
 
 export const authenticationRoutes = [
   { path: AUTH_ROUTES.LOGIN, element: <LoginPage /> },
@@ -20,4 +21,5 @@ export const protectedRoutes = [
   { path: PROTECTED_ROUTES.USERS_LIST, element: <UserListPage /> },
   { path: PROTECTED_ROUTES.ORDERS_LIST, element: <OrdersListPage /> },
   { path: "/users/:id", element: <UserDetailPage /> },
+  { path: "/users/:id/edit", element: <EditUserPage /> },
 ];

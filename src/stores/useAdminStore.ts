@@ -21,6 +21,7 @@ interface initialState {
   deleteUser: (id: number) => void;
   updateRole: (id: number) => void;
   getUserById: (id: number) => Promise<UserType | null>;
+  updateUser: (id: number, user: Partial<UserType>) => Promise<void>;
 }
 
 export const useAdminStore = create<initialState>((set, get) => ({
@@ -144,6 +145,24 @@ export const useAdminStore = create<initialState>((set, get) => ({
         toast.error("An error occured");
       }
       return null;
+    }
+  },
+  updateUser: async (id: number, user: Partial<UserType>) => {
+    set({ loading: true });
+    try {
+      const response = await axiosInstace.put(`/users/${id}`, user);
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        get().getAllUsers();
+      }
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        toast.error(error?.response?.data?.message || "An error occured");
+      } else {
+        toast.error("An error occured");
+      }
+    } finally {
+      set({ loading: false });
     }
   },
 }));
