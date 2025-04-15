@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 export default function Logo() {
   return (
     <div>
-      <Link to="/dashboard/main-page" className="flex gap-2.5">
+      <Link to="/dashboard" className="flex gap-2.5">
         <Gem />
         <span className="font-bold tracking-wider">V-Eng</span>
       </Link>

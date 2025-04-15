@@ -1,3 +1,4 @@
+import { EditUser, UserDetail, UserList } from "@/features/users";
 import { lazy } from "react";
 import { AUTH_ROUTES, PROTECTED_ROUTES } from "./routesPath";
 
@@ -8,9 +9,6 @@ const DashboardPage = lazy(
 const OrdersListPage = lazy(
   () => import("../../pages/dashboard/orders-list-page")
 );
-const UserListPage = lazy(() => import("../../pages/dashboard/user-list-page"));
-const UserDetailPage = lazy(() => import("../../pages/users/[id]"));
-const EditUserPage = lazy(() => import("../../pages/users/[id]/edit"));
 
 export const authenticationRoutes = [
   { path: AUTH_ROUTES.LOGIN, element: <LoginPage /> },
@@ -18,8 +16,8 @@ export const authenticationRoutes = [
 
 export const protectedRoutes = [
   { path: PROTECTED_ROUTES.DASHBOARD, element: <DashboardPage /> },
-  { path: PROTECTED_ROUTES.USERS_LIST, element: <UserListPage /> },
+  { path: PROTECTED_ROUTES.USERS_LIST, element: <UserList /> },
+  { path: PROTECTED_ROUTES.USERS_DETAIL, element: <UserDetail /> },
+  { path: PROTECTED_ROUTES.USERS_EDIT, element: <EditUser /> },
   { path: PROTECTED_ROUTES.ORDERS_LIST, element: <OrdersListPage /> },
-  { path: "/users/:id", element: <UserDetailPage /> },
-  { path: "/users/:id/edit", element: <EditUserPage /> },
 ];

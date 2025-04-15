@@ -35,7 +35,7 @@ export default function LoginPage() {
     values: LoginSchemaType
   ) => {
     login(values);
-    navigate("/dashboard/main-page");
+    navigate("/dashboard");
   };
 
   return (

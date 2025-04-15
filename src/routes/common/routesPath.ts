@@ -3,7 +3,9 @@ export const AUTH_ROUTES = {
 };
 
 export const PROTECTED_ROUTES = {
-  DASHBOARD: "/dashboard/main-page",
-  USERS_LIST: "/dashboard/users-list",
-  ORDERS_LIST: "/dashboard/orders-list",
+  DASHBOARD: "/dashboard",
+  USERS_LIST: "/users",
+  USERS_DETAIL: "/users/:id",
+  USERS_EDIT: "/users/:id/edit",
+  ORDERS_LIST: "/orders",
 };

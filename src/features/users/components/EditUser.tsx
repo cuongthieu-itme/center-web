@@ -2,15 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAdminStore } from "@/stores/useAdminStore";
-import { UserType } from "@/types";
-import { ArrowLeft, Image, Mail, Save, User } from "lucide-react";
+import { ArrowLeft, Image, Mail, Save, User as UserIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useUserStore } from "../hooks/useUserStore";
+import { User as UserType } from "../types";
 
-export default function EditUserPage() {
+export default function EditUser() {
   const { id } = useParams();
-  const { getUserById, updateUser } = useAdminStore();
+  const { getUserById, updateUser } = useUserStore();
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -60,40 +60,26 @@ export default function EditUserPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-[50vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
 
-  if (error) {
+  if (error || !user) {
     return (
-      <div className="container mx-auto">
-        <div className="max-w-4xl mx-auto">
-          <Button
-            variant="ghost"
-            className="mb-6"
-            onClick={() => navigate(-1)}
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Quay lại
-          </Button>
-          <Card>
-            <CardContent className="pt-6 text-center">
-              <div className="flex flex-col items-center gap-4">
-                <div className="text-6xl">😕</div>
-                <h2 className="text-2xl font-bold">Không tìm thấy người dùng</h2>
-                <p className="text-muted-foreground">
-                  Người dùng bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="flex flex-col items-center justify-center h-[50vh]">
+        <p className="text-red-500">{error}</p>
+        <Button
+          variant="ghost"
+          className="mt-4"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Quay lại
+        </Button>
       </div>
     );
   }
-
-  if (!user) return null;
 
   return (
     <div className="container mx-auto">
@@ -136,7 +122,7 @@ export default function EditUserPage() {
                 <div className="grid gap-6">
                   <div className="grid gap-2">
                     <Label htmlFor="name" className="flex items-center gap-2">
-                      <User className="h-4 w-4" />
+                      <UserIcon className="h-4 w-4" />
                       Họ và tên
                     </Label>
                     <Input

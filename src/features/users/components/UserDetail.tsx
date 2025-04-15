@@ -3,16 +3,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAdminStore } from "@/stores/useAdminStore";
-import { UserType } from "@/types";
-import { Activity, ArrowLeft, Calendar, Mail, Pencil, Shield } from "lucide-react";
+import { Activity, ArrowLeft, Calendar, Pencil, Shield } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useUserStore } from "../hooks/useUserStore";
+import { User } from "../types";
 
-export default function UserDetailPage() {
+export default function UserDetail() {
   const { id } = useParams();
-  const { getUserById } = useAdminStore();
-  const [user, setUser] = useState<UserType | null>(null);
+  const { getUserById } = useUserStore();
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -53,38 +53,24 @@ export default function UserDetailPage() {
     );
   }
 
-  if (error) {
+  if (error || !user) {
     return (
-      <div className="container mx-auto">
-        <div className="max-w-4xl mx-auto">
-          <Button
-            variant="ghost"
-            className="mb-6"
-            onClick={() => navigate(-1)}
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Quay lại
-          </Button>
-          <Card>
-            <CardContent className="pt-6 text-center">
-              <div className="flex flex-col items-center gap-4">
-                <div className="text-6xl">😕</div>
-                <h2 className="text-2xl font-bold">Không tìm thấy người dùng</h2>
-                <p className="text-muted-foreground">
-                  Người dùng bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="flex flex-col items-center justify-center h-[50vh]">
+        <p className="text-red-500">{error}</p>
+        <Button
+          variant="ghost"
+          className="mt-4"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Quay lại
+        </Button>
       </div>
     );
   }
 
-  if (!user) return null;
-
   const roleLabel = {
-    admin: "Admin",
+    admin: "Quản trị viên",
     teacher: "Giáo viên",
     student: "Học sinh",
   }[user.role] || "Không xác định";
@@ -180,23 +166,9 @@ export default function UserDetailPage() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Ngày tạo</p>
-                    <p className="font-medium mt-1">
-                      {new Date(user.created_at).toLocaleDateString('vi-VN', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
+                    <p className="text-sm font-medium mt-1">
+                      {new Date(user.createdAt).toLocaleDateString()}
                     </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-full bg-primary/10">
-                    <Mail className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Email</p>
-                    <p className="font-medium mt-1">{user.email}</p>
                   </div>
                 </div>
               </div>

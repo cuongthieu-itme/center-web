@@ -1,15 +1,28 @@
 import { Badge } from "@/components/ui/badge";
-import { UserType } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
-import UserActionMenu from "./user-action-menu";
+import { User } from "../types";
+import UserActionMenu from "./UserActionMenu";
 
 // Simple date formatter function
 const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-GB'); // Format as DD/MM/YYYY
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "N/A";
+    }
+    return new Intl.DateTimeFormat('vi-VN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(date);
+  } catch (error) {
+    return "N/A";
+  }
 };
 
-export const columns: ColumnDef<UserType>[] = [
+export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "id",
     header: "ID",
@@ -52,7 +65,7 @@ export const columns: ColumnDef<UserType>[] = [
     header: "Ngày tạo",
     cell: ({ row }) => {
       const date = row.getValue("created_at") as string;
-      return date ? formatDate(date) : "N/A";
+      return formatDate(date);
     }
   },
   {
@@ -63,4 +76,4 @@ export const columns: ColumnDef<UserType>[] = [
       return <UserActionMenu user={row.original} />;
     },
   },
-];
+]; 

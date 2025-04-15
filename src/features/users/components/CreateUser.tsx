@@ -16,11 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useAdminStore } from "@/stores/useAdminStore";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-
 import {
   Select,
   SelectContent,
@@ -28,18 +23,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { registerSchema, RegisterSchemaType } from "@/validations/auth.schema";
+import { registerSchema } from "@/validations/auth.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { BadgePlus } from "lucide-react";
-import {
-  SidebarGroup,
-  SidebarMenu,
-  SidebarMenuItem
-} from "../../ui/sidebar";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useUserStore } from "../hooks/useUserStore";
+import { UserFormData } from "../types";
 
 export default function CreateUser() {
   const [open, setOpen] = useState(false);
-  const { createUser, loading } = useAdminStore();
-  const form = useForm<RegisterSchemaType>({
+  const { createUser, loading } = useUserStore();
+  const form = useForm<UserFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
@@ -61,7 +56,7 @@ export default function CreateUser() {
     }
   }, [open, form]);
   
-  const onSubmit = (values: RegisterSchemaType) => {
+  const onSubmit = (values: UserFormData) => {
     createUser(values);
     form.reset();
     setOpen(false);
@@ -70,16 +65,10 @@ export default function CreateUser() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <SidebarGroup>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <Button variant="default">
-                <BadgePlus />
-                Tạo mới
-              </Button>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarGroup>
+        <Button variant="default">
+          <BadgePlus className="mr-2 h-4 w-4" />
+          Tạo mới
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
@@ -179,4 +168,4 @@ export default function CreateUser() {
       </DialogContent>
     </Dialog>
   );
-}
+} 

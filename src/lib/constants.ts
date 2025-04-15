@@ -4,7 +4,7 @@ import { ItemType } from "../types";
 export const AdminView: ItemType[] = [
   {
     title: "Người dùng",
-    url: `/dashboard/users-list`,
+    url: `/users`,
     icon: User,
   }
 ];

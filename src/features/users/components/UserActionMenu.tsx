@@ -6,13 +6,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useAdminStore } from "@/stores/useAdminStore";
-import { UserType } from "@/types";
 import { Ellipsis } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useUserStore } from "../hooks/useUserStore";
+import { User } from "../types";
 
-export default function UserActionMenu({ user }: { user: UserType }) {
-  const { deleteUser } = useAdminStore();
+export default function UserActionMenu({ user }: { user: User }) {
+  const { deleteUser } = useUserStore();
   const navigate = useNavigate();
 
   const handleDeleteUser = () => {
@@ -42,4 +42,4 @@ export default function UserActionMenu({ user }: { user: UserType }) {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+} 
