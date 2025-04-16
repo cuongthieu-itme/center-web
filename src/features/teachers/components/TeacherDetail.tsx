@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
-import { ArrowLeft, BookOpen, Calendar, Mail, Phone, User } from "lucide-react";
+import { ArrowLeft, BookOpen, Calendar, Mail, Pencil, Phone, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTeacherStore } from "../hooks/useTeacherStore";
@@ -103,7 +103,17 @@ export default function TeacherDetail() {
           {/* Details Card */}
           <Card className="md:col-span-3">
             <CardHeader>
-              <CardTitle>Thông tin giáo viên</CardTitle>
+              <div className="flex justify-between items-center">
+                <CardTitle>Thông tin giáo viên</CardTitle>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => navigate(`/teachers/${id}/edit`)}
+                >
+                  <Pencil className="h-4 w-4 mr-2" />
+                  Chỉnh sửa
+                </Button>
+              </div>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -9,6 +9,7 @@ export const PROTECTED_ROUTES = {
   USERS_EDIT: "/users/:id/edit",
   TEACHERS_LIST: "/teachers",
   TEACHERS_DETAIL: "/teachers/:id",
+  TEACHERS_EDIT: "/teachers/:id/edit",
   STUDENTS_LIST: "/students",
   STUDENTS_DETAIL: "/students/:id",
   CLASSES_LIST: "/classes",
