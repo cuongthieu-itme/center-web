@@ -34,7 +34,7 @@ export const columns: ColumnDef<Teacher>[] = [
     header: "Trạng thái",
     cell: ({ row }) => {
       const deleted_at = row.original.deleted_at;
-      
+
       if (deleted_at) {
         return (
           <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200">
@@ -42,8 +42,10 @@ export const columns: ColumnDef<Teacher>[] = [
           </Badge>
         );
       }
-      
-      return null;
+
+      return <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">
+        Đang hoạt động
+      </Badge>;
     },
   },
   {
