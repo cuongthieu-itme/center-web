@@ -28,19 +28,9 @@ const renderStatusBadge = (status: string) => {
 };
 
 // Format time from ISO string to HH:MM:SS
-const formatTimeOnly = (dateTimeString: string | null): string => {
-  if (!dateTimeString) return "N/A";
-  try {
-    const date = new Date(dateTimeString);
-    return date.toLocaleTimeString('vi-VN', { 
-      hour: '2-digit', 
-      minute: '2-digit', 
-      second: '2-digit',
-      hour12: false 
-    });
-  } catch {
-    return "Invalid time";
-  }
+const formatTimeOnly = (timeString: string | null): string => {
+  if (!timeString) return "N/A";
+  return timeString;
 };
 
 export const columns: ColumnDef<Attendance>[] = [
@@ -81,10 +71,10 @@ export const columns: ColumnDef<Attendance>[] = [
     }
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "created_at",
     header: "Ngày tạo",
     cell: ({ row }) => {
-      const date = row.getValue("createdAt") as string;
+      const date = row.getValue("created_at") as string;
       return formatDate(date);
     }
   },
