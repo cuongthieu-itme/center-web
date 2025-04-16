@@ -136,6 +136,7 @@ export default function CreateUser() {
                 </FormItem>
               )}
             />
+            <p className="text-sm text-muted-foreground">Mật khẩu mặc định: 123456789</p>
             <FormField
               control={form.control}
               name="role"
