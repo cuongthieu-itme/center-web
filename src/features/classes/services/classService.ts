@@ -12,6 +12,11 @@ export const classService = {
     return response.data;
   },
 
+  getClassesByTeacherId: async (teacherId: number, page: number = 1) => {
+    const response = await axiosInstance.get(`/classes?teacher_id=${teacherId}&page=${page}`);
+    return response.data;
+  },
+
   createClass: async (classData: ClassFormData) => {
     const response = await axiosInstance.post("/classes", classData);
     return response.data;

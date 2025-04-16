@@ -9,6 +9,7 @@ interface ClassState {
   classesPagination: ClassPagination;
   createClass: (values: ClassFormData) => Promise<void>;
   getAllClasses: (page?: number) => Promise<void>;
+  getClassesByTeacherId: (teacherId: number, page?: number) => Promise<void>;
   deleteClass: (id: number) => Promise<void>;
   getClassById: (id: number) => Promise<Class | null>;
   updateClass: (id: number, classData: Partial<Class>) => Promise<void>;
@@ -45,6 +46,30 @@ export const useClassStore = create<ClassState>((set, get) => ({
     set({ loading: true });
     try {
       const response = await classService.getAllClasses(page);
+      set({ 
+        classes: response.data,
+        classesPagination: {
+          current_page: response.current_page,
+          last_page: response.last_page,
+          total: response.total,
+          per_page: response.per_page,
+          from: response.from,
+          to: response.to,
+        },
+      });
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  getClassesByTeacherId: async (teacherId: number, page = 1) => {
+    if (get().loading) return;
+    set({ loading: true });
+    try {
+      const response = await classService.getClassesByTeacherId(teacherId, page);
       set({ 
         classes: response.data,
         classesPagination: {
