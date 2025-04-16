@@ -50,16 +50,14 @@ export default function EditTeacher() {
 
     try {
       await updateTeacher(Number(id), {
-        teacher: {
-          id: teacher.id,
-          full_name: teacher.full_name,
-          phone: teacher.phone,
-          email: teacher.email,
-          specialization: teacher.specialization,
-          user_id: teacher.user_id,
-          created_at: teacher.created_at,
-          updated_at: teacher.updated_at
-        }
+        id: teacher.id,
+        full_name: teacher.full_name,
+        phone: teacher.phone,
+        email: teacher.email,
+        specialization: teacher.specialization,
+        user_id: teacher.user_id,
+        created_at: teacher.created_at,
+        updated_at: teacher.updated_at
       });
       navigate(`/teachers/${id}`);
     } catch (err) {

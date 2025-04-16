@@ -11,7 +11,7 @@ interface TeacherState {
   getAllTeachers: (page?: number) => Promise<void>;
   deleteTeacher: (id: number) => Promise<void>;
   getTeacherById: (id: number) => Promise<TeacherDetail | null>;
-  updateTeacher: (id: number, teacher: Partial<Teacher>) => Promise<void>;
+  updateTeacher: (id: number, teacher: Partial<Teacher | any>) => Promise<void>;
 }
 
 export const useTeacherStore = create<TeacherState>((set, get) => ({
