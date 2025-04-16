@@ -1,27 +1,8 @@
 import { Badge } from "@/components/ui/badge";
+import { formatDate } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { User } from "../types";
 import UserActionMenu from "./UserActionMenu";
-
-// Simple date formatter function
-const formatDate = (dateString: string) => {
-  try {
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-      return "N/A";
-    }
-    return new Intl.DateTimeFormat('vi-VN', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).format(date);
-  } catch (error) {
-    console.error('Error formatting date:', error);
-    return "N/A";
-  }
-};
 
 export const columns: ColumnDef<User>[] = [
   {
