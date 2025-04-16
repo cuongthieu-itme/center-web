@@ -26,4 +26,28 @@ export type StudentPagination = {
   per_page: number;
   from: number;
   to: number;
+};
+
+export type StudentClass = {
+  id: number;
+  name: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+  teacher_id: number;
+  teacher_name?: string;
+  createdAt: string;
+};
+
+export type StudentAttendance = {
+  id: number;
+  student_id: number;
+  session_id: number;
+  class_id: number;
+  class_name?: string;
+  status: "present" | "absent" | "late" | "excused";
+  check_in_time: string | null;
+  check_out_time: string | null;
+  date: string;
+  createdAt: string;
 }; 

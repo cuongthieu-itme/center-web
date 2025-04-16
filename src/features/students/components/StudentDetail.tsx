@@ -1,4 +1,5 @@
 import LoadingSpinner from "@/components/shared/loading-spinner";
+import { DataTable } from "@/components/shared/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,19 +9,28 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStudentStore } from "../hooks/useStudentStore";
 import { Student } from "../types";
+import { studentAttendanceColumns } from "./StudentAttendanceColumns";
+import { studentClassColumns } from "./StudentClassColumns";
 
 export default function StudentDetail() {
   const { id } = useParams();
-  const { getStudentById } = useStudentStore();
+  const { 
+    getStudentById, 
+    getStudentClasses, 
+    getStudentAttendance,
+    studentClasses,
+    studentAttendance,
+    loading 
+  } = useStudentStore();
   const [student, setStudent] = useState<Student | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchStudent = async () => {
+    const fetchData = async () => {
       try {
-        setLoading(true);
+        setIsLoading(true);
         setError(null);
         
         if (!id) {
@@ -28,9 +38,15 @@ export default function StudentDetail() {
           return;
         }
 
-        const studentData = await getStudentById(Number(id));
+        const studentId = Number(id);
+        const studentData = await getStudentById(studentId);
+        
         if (studentData) {
           setStudent(studentData);
+          
+          // Load student classes and attendance
+          await getStudentClasses(studentId);
+          await getStudentAttendance(studentId);
         } else {
           setError("Không tìm thấy học sinh");
         }
@@ -38,14 +54,14 @@ export default function StudentDetail() {
         setError("Đã xảy ra lỗi khi tải dữ liệu học sinh");
         console.error(err);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
-    fetchStudent();
-  }, [id, getStudentById]);
+    fetchData();
+  }, [id, getStudentById, getStudentClasses, getStudentAttendance]);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center h-[50vh]">
         <LoadingSpinner />
@@ -71,7 +87,7 @@ export default function StudentDetail() {
 
   return (
     <div className="container mx-auto">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <Button
           variant="ghost"
           className="mb-6"
@@ -81,7 +97,7 @@ export default function StudentDetail() {
           Quay lại
         </Button>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           {/* Profile Card */}
           <Card className="md:col-span-1">
             <CardHeader className="text-center">
@@ -151,6 +167,34 @@ export default function StudentDetail() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Student Classes */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Danh sách lớp học</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <DataTable 
+              columns={studentClassColumns} 
+              data={studentClasses} 
+              loading={loading} 
+            />
+          </CardContent>
+        </Card>
+
+        {/* Student Attendance */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Danh sách điểm danh</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <DataTable 
+              columns={studentAttendanceColumns} 
+              data={studentAttendance} 
+              loading={loading} 
+            />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -1,23 +1,47 @@
 import { toast } from "sonner";
 import { create } from "zustand";
 import { studentService } from "../services/studentService";
-import { Student, StudentFormData, StudentPagination } from "../types";
+import { Student, StudentAttendance, StudentClass, StudentFormData, StudentPagination } from "../types";
 
 interface StudentState {
   loading: boolean;
   students: Student[];
   studentsPagination: StudentPagination;
+  studentClasses: StudentClass[];
+  studentAttendance: StudentAttendance[];
+  studentClassesPagination: StudentPagination;
+  studentAttendancePagination: StudentPagination;
   createStudent: (values: StudentFormData) => Promise<void>;
   getAllStudents: (page?: number) => Promise<void>;
   deleteStudent: (id: number) => Promise<void>;
   getStudentById: (id: number) => Promise<Student | null>;
   updateStudent: (id: number, student: Partial<Student>) => Promise<void>;
+  getStudentClasses: (studentId: number, page?: number) => Promise<void>;
+  getStudentAttendance: (studentId: number, page?: number) => Promise<void>;
 }
 
 export const useStudentStore = create<StudentState>((set, get) => ({
   loading: false,
   students: [],
+  studentClasses: [],
+  studentAttendance: [],
   studentsPagination: {
+    current_page: 1,
+    last_page: 1,
+    total: 0,
+    per_page: 20,
+    from: 0,
+    to: 0,
+  },
+  studentClassesPagination: {
+    current_page: 1,
+    last_page: 1,
+    total: 0,
+    per_page: 20,
+    from: 0,
+    to: 0,
+  },
+  studentAttendancePagination: {
     current_page: 1,
     last_page: 1,
     total: 0,
@@ -98,6 +122,54 @@ export const useStudentStore = create<StudentState>((set, get) => ({
       const err = error as { response?: { data?: { message?: string } } };
       toast.error(err?.response?.data?.message || "An error occurred");
       throw error;
+    }
+  },
+  
+  getStudentClasses: async (studentId: number, page = 1) => {
+    if (get().loading) return;
+    set({ loading: true });
+    try {
+      const response = await studentService.getStudentClasses(studentId, page);
+      set({ 
+        studentClasses: response.data,
+        studentClassesPagination: {
+          current_page: response.current_page,
+          last_page: response.last_page,
+          total: response.total,
+          per_page: response.per_page,
+          from: response.from,
+          to: response.to,
+        },
+      });
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
+    } finally {
+      set({ loading: false });
+    }
+  },
+  
+  getStudentAttendance: async (studentId: number, page = 1) => {
+    if (get().loading) return;
+    set({ loading: true });
+    try {
+      const response = await studentService.getStudentAttendance(studentId, page);
+      set({ 
+        studentAttendance: response.data,
+        studentAttendancePagination: {
+          current_page: response.current_page,
+          last_page: response.last_page,
+          total: response.total,
+          per_page: response.per_page,
+          from: response.from,
+          to: response.to,
+        },
+      });
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
+    } finally {
+      set({ loading: false });
     }
   }
 })); 

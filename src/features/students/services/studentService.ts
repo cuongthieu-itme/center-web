@@ -25,5 +25,15 @@ export const studentService = {
   deleteStudent: async (id: number) => {
     const response = await axiosInstance.delete(`/students/${id}`);
     return response.data;
+  },
+
+  getStudentClasses: async (studentId: number, page: number = 1) => {
+    const response = await axiosInstance.get(`/students/${studentId}/classes?page=${page}`);
+    return response.data;
+  },
+
+  getStudentAttendance: async (studentId: number, page: number = 1) => {
+    const response = await axiosInstance.get(`/students/${studentId}/attendance?page=${page}`);
+    return response.data;
   }
 }; 
