@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
-import { ArrowLeft, Calendar, Home, Mail, Phone, User } from "lucide-react";
+import { ArrowLeft, Calendar, Home, Mail, Pencil, Phone, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStudentStore } from "../hooks/useStudentStore";
@@ -117,7 +117,17 @@ export default function StudentDetail() {
           {/* Details Card */}
           <Card className="md:col-span-3">
             <CardHeader>
-              <CardTitle>Thông tin học sinh</CardTitle>
+              <div className="flex justify-between items-center">
+                <CardTitle>Thông tin học sinh</CardTitle>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => navigate(`/students/${id}/edit`)}
+                >
+                  <Pencil className="h-4 w-4 mr-2" />
+                  Chỉnh sửa
+                </Button>
+              </div>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

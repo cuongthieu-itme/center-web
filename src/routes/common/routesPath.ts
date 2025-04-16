@@ -12,6 +12,7 @@ export const PROTECTED_ROUTES = {
   TEACHERS_EDIT: "/teachers/:id/edit",
   STUDENTS_LIST: "/students",
   STUDENTS_DETAIL: "/students/:id",
+  STUDENTS_EDIT: "/students/:id/edit",
   CLASSES_LIST: "/classes",
   CLASSES_DETAIL: "/classes/:id",
   ATTENDANCE_LIST: "/attendance",

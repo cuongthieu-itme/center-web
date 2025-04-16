@@ -1,6 +1,6 @@
 import { AttendanceDetail, AttendanceList } from "@/features/attendance";
 import { ClassDetail, ClassList } from "@/features/classes";
-import { StudentDetail, StudentList } from "@/features/students";
+import { EditStudent, StudentDetail, StudentList } from "@/features/students";
 import { EditTeacher, TeacherDetail, TeacherList } from "@/features/teachers";
 import { EditUser, UserDetail, UserList } from "@/features/users";
 import { lazy } from "react";
@@ -28,6 +28,7 @@ export const protectedRoutes = [
   { path: PROTECTED_ROUTES.TEACHERS_EDIT, element: <EditTeacher /> },
   { path: PROTECTED_ROUTES.STUDENTS_LIST, element: <StudentList /> },
   { path: PROTECTED_ROUTES.STUDENTS_DETAIL, element: <StudentDetail /> },
+  { path: PROTECTED_ROUTES.STUDENTS_EDIT, element: <EditStudent /> },
   { path: PROTECTED_ROUTES.CLASSES_LIST, element: <ClassList /> },
   { path: PROTECTED_ROUTES.CLASSES_DETAIL, element: <ClassDetail /> },
   { path: PROTECTED_ROUTES.ATTENDANCE_LIST, element: <AttendanceList /> },

@@ -32,6 +32,10 @@ export default function StudentActionMenu({ student }: { student: Student }) {
     navigate(`/students/${student.id}`);
   };
 
+  const handleEdit = () => {
+    navigate(`/students/${student.id}/edit`);
+  };
+
   return (
     <>
       <DropdownMenu>
@@ -46,6 +50,9 @@ export default function StudentActionMenu({ student }: { student: Student }) {
             Xóa
           </DropdownMenuItem>
           <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleEdit}>
+            Chỉnh sửa
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={handleViewDetail}>
             Chi tiết
           </DropdownMenuItem>
