@@ -50,7 +50,7 @@ export const columns: ColumnDef<Attendance>[] = [
       return (
         <div className="flex items-center gap-3">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={student.avatar_url} alt={student.full_name} />
+            <AvatarImage src={"https://ui-avatars.com/api/?name=" + encodeURIComponent(student.full_name) + "&background=random"} alt={student.full_name} />
             <AvatarFallback>{student.full_name.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
