@@ -17,6 +17,7 @@ export type Teacher = {
   student: null;
   created_at: string;
   updated_at: string;
+  deleted_at?: string | null;
 };
 
 export type TeacherFormData = {

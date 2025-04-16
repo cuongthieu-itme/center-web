@@ -43,6 +43,23 @@ export const columns: ColumnDef<User>[] = [
     },
   },
   {
+    accessorKey: "status",
+    header: "Trạng thái",
+    cell: ({ row }) => {
+      const deleted_at = row.original.deleted_at;
+      
+      if (deleted_at) {
+        return (
+          <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200">
+            Đã nghỉ
+          </Badge>
+        );
+      }
+      
+      return null;
+    },
+  },
+  {
     accessorKey: "created_at",
     header: "Ngày tạo",
     cell: ({ row }) => {

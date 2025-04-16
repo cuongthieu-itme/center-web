@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { Teacher } from "../types";
@@ -27,6 +28,23 @@ export const columns: ColumnDef<Teacher>[] = [
     accessorKey: "teacher.specialization",
     header: "Chuyên môn",
     cell: ({ row }) => row.original.teacher?.specialization || "",
+  },
+  {
+    accessorKey: "status",
+    header: "Trạng thái",
+    cell: ({ row }) => {
+      const deleted_at = row.original.deleted_at;
+      
+      if (deleted_at) {
+        return (
+          <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200">
+            Đã nghỉ
+          </Badge>
+        );
+      }
+      
+      return null;
+    },
   },
   {
     accessorKey: "created_at",

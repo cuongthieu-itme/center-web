@@ -8,6 +8,7 @@ export type Student = {
   avatar_url?: string;
   user_id: number;
   createdAt: string;
+  deleted_at?: string | null;
 };
 
 export type StudentFormData = {

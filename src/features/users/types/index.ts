@@ -6,6 +6,7 @@ export type User = {
   role: "admin" | "teacher" | "student";
   isActive: boolean;
   createdAt: string;
+  deleted_at?: string | null;
 };
 
 export type UserFormData = {
