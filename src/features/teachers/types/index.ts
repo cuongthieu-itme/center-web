@@ -34,4 +34,16 @@ export type TeacherPagination = {
   per_page: number;
   from: number;
   to: number;
+};
+
+export type TeacherDetail = {
+  id: number;
+  full_name: string;
+  phone: string;
+  email: string;
+  specialization: string;
+  avatar_url?: string;
+  user_id: number;
+  created_at: string;
+  updated_at: string;
 }; 

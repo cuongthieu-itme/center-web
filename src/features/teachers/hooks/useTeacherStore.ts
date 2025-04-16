@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { create } from "zustand";
 import { teacherService } from "../services/teacherService";
-import { Teacher, TeacherFormData, TeacherPagination } from "../types";
+import { Teacher, TeacherDetail, TeacherFormData, TeacherPagination } from "../types";
 
 interface TeacherState {
   loading: boolean;
@@ -10,7 +10,7 @@ interface TeacherState {
   createTeacher: (values: TeacherFormData) => Promise<void>;
   getAllTeachers: (page?: number) => Promise<void>;
   deleteTeacher: (id: number) => Promise<void>;
-  getTeacherById: (id: number) => Promise<Teacher | null>;
+  getTeacherById: (id: number) => Promise<TeacherDetail | null>;
   updateTeacher: (id: number, teacher: Partial<Teacher>) => Promise<void>;
 }
 

@@ -8,12 +8,12 @@ import { ArrowLeft, BookOpen, Calendar, Mail, Phone, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTeacherStore } from "../hooks/useTeacherStore";
-import { Teacher } from "../types";
+import { TeacherDetail as TeacherDetailType } from "../types";
 
 export default function TeacherDetail() {
   const { id } = useParams();
   const { getTeacherById } = useTeacherStore();
-  const [teacher, setTeacher] = useState<Teacher | null>(null);
+  const [teacher, setTeacher] = useState<TeacherDetailType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -87,16 +87,16 @@ export default function TeacherDetail() {
           <Card className="md:col-span-1">
             <CardHeader className="text-center">
               <Avatar className="mx-auto h-24 w-24">
-                {teacher.teacher?.avatar_url ? (
-                  <AvatarImage src={teacher.teacher.avatar_url} alt={teacher.teacher.full_name} />
+                {teacher.avatar_url ? (
+                  <AvatarImage src={"https://ui-avatars.com/api/?name=" + encodeURIComponent(teacher.full_name) + "&background=random"} alt={teacher.full_name} />
                 ) : (
                   <AvatarFallback>
-                    {teacher.teacher?.full_name.charAt(0).toUpperCase() || teacher.name.charAt(0).toUpperCase()}
+                    {teacher.full_name?.charAt(0)?.toUpperCase() || 'T'}
                   </AvatarFallback>
                 )}
               </Avatar>
-              <CardTitle className="mt-2">{teacher.teacher?.full_name || teacher.name}</CardTitle>
-              <Badge className="mt-1">{teacher.teacher?.specialization || ''}</Badge>
+              <CardTitle className="mt-2">{teacher.full_name}</CardTitle>
+              <Badge className="mt-1">{teacher.specialization || ''}</Badge>
             </CardHeader>
           </Card>
 
@@ -111,28 +111,34 @@ export default function TeacherDetail() {
                   <User className="text-gray-500" />
                   <div>
                     <p className="text-sm text-gray-500">Họ và tên</p>
-                    <p className="font-medium">{teacher.teacher?.full_name || teacher.name}</p>
+                    <p className="font-medium">
+                      {teacher.full_name || <span className="text-gray-400 italic">Chưa cập nhật</span>}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="text-gray-500" />
                   <div>
                     <p className="text-sm text-gray-500">Email</p>
-                    <p className="font-medium">{teacher.teacher?.email || teacher.email}</p>
+                    <p className="font-medium">{teacher.email}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone className="text-gray-500" />
                   <div>
                     <p className="text-sm text-gray-500">Số điện thoại</p>
-                    <p className="font-medium">{teacher.teacher?.phone || ''}</p>
+                    <p className="font-medium">
+                      {teacher.phone || <span className="text-gray-400 italic">Chưa cập nhật</span>}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <BookOpen className="text-gray-500" />
                   <div>
                     <p className="text-sm text-gray-500">Chuyên môn</p>
-                    <p className="font-medium">{teacher.teacher?.specialization || ''}</p>
+                    <p className="font-medium">
+                      {teacher.specialization || <span className="text-gray-400 italic">Chưa cập nhật</span>}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">

@@ -1,5 +1,5 @@
 import axiosInstance from "@/lib/axios";
-import { Teacher, TeacherFormData } from "../types";
+import { Teacher, TeacherDetail, TeacherFormData } from "../types";
 
 export const teacherService = {
   getAllTeachers: async (page: number = 1) => {
@@ -7,7 +7,7 @@ export const teacherService = {
     return response.data;
   },
 
-  getTeacherById: async (id: number) => {
+  getTeacherById: async (id: number): Promise<TeacherDetail> => {
     const response = await axiosInstance.get(`/teachers/${id}`);
     return response.data;
   },
