@@ -1,3 +1,4 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
@@ -33,18 +34,47 @@ const formatTimeOnly = (timeString: string | null): string => {
   return timeString;
 };
 
+// Format session date and time
+const formatSessionDateTime = (sessionDate: string, startTime: string, endTime: string): string => {
+  const date = new Date(sessionDate);
+  const formattedDate = date.toLocaleDateString('vi-VN');
+  return `${formattedDate} (${startTime} - ${endTime})`;
+};
+
 export const columns: ColumnDef<Attendance>[] = [
   {
-    accessorKey: "id",
-    header: "ID",
+    accessorKey: "student",
+    header: "Học sinh",
+    cell: ({ row }) => {
+      const student = row.original.student;
+      return (
+        <div className="flex items-center gap-3">
+          <Avatar className="h-8 w-8">
+            <AvatarImage src={student.avatar_url} alt={student.full_name} />
+            <AvatarFallback>{student.full_name.charAt(0)}</AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col">
+            <span className="font-medium">{student.full_name}</span>
+            <span className="text-sm text-muted-foreground">{student.email}</span>
+          </div>
+        </div>
+      );
+    }
   },
   {
-    accessorKey: "student_id",
-    header: "Mã học sinh",
-  },
-  {
-    accessorKey: "session_id",
+    accessorKey: "class_session",
     header: "Buổi học",
+    cell: ({ row }) => {
+      const session = row.original.class_session;
+      return (
+        <div className="flex flex-col">
+          <span className="font-medium">Buổi {session.id}</span>
+          <span className="text-sm text-muted-foreground">
+            {formatSessionDateTime(session.session_date, session.start_time, session.end_time)}
+          </span>
+        </div>
+      );
+    }
   },
   {
     accessorKey: "status",

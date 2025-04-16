@@ -26,22 +26,23 @@ const renderStatusBadge = (status: string) => {
   );
 };
 
+const formatTimeOnly = (timeString: string | null): string => {
+  if (!timeString) return "N/A";
+  return timeString;
+};
+
 export const studentAttendanceColumns: ColumnDef<StudentAttendance>[] = [
   {
     accessorKey: "id",
     header: "ID",
   },
   {
-    accessorKey: "class_name",
-    header: "Lớp học",
+    accessorKey: "student_id",
+    header: "Mã học sinh",
   },
   {
-    accessorKey: "date",
-    header: "Ngày",
-    cell: ({ row }) => {
-      const date = row.getValue("date") as string;
-      return formatDate(date);
-    }
+    accessorKey: "session_id",
+    header: "Buổi học",
   },
   {
     accessorKey: "status",
@@ -56,7 +57,7 @@ export const studentAttendanceColumns: ColumnDef<StudentAttendance>[] = [
     header: "Giờ vào",
     cell: ({ row }) => {
       const time = row.getValue("check_in_time") as string | null;
-      return time ? new Date(time).toLocaleTimeString() : "N/A";
+      return formatTimeOnly(time);
     }
   },
   {
@@ -64,15 +65,15 @@ export const studentAttendanceColumns: ColumnDef<StudentAttendance>[] = [
     header: "Giờ ra",
     cell: ({ row }) => {
       const time = row.getValue("check_out_time") as string | null;
-      return time ? new Date(time).toLocaleTimeString() : "N/A";
+      return formatTimeOnly(time);
     }
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "created_at",
     header: "Ngày tạo",
     cell: ({ row }) => {
-      const date = row.getValue("createdAt") as string;
+      const date = row.getValue("created_at") as string;
       return formatDate(date);
     }
-  }
+  },
 ]; 
