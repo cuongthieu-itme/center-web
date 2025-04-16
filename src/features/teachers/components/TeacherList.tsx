@@ -33,7 +33,7 @@ export default function TeacherList() {
         <CreateTeacher />
       </div>
 
-      <div className="border rounded-md">
+      <div>
         <DataTable columns={columns} data={teachers} loading={loading} />
       </div>
 

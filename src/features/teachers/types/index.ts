@@ -1,12 +1,22 @@
 export type Teacher = {
   id: number;
-  full_name: string;
-  phone: string;
+  name: string;
   email: string;
-  specialization: string;
-  avatar_url?: string;
-  user_id: number;
-  createdAt: string;
+  role: string;
+  teacher: {
+    id: number;
+    full_name: string;
+    phone: string;
+    email: string;
+    specialization: string;
+    avatar_url?: string;
+    user_id: number;
+    created_at: string;
+    updated_at: string;
+  } | null;
+  student: null;
+  created_at: string;
+  updated_at: string;
 };
 
 export type TeacherFormData = {

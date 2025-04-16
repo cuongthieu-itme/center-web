@@ -9,26 +9,30 @@ export const columns: ColumnDef<Teacher>[] = [
     header: "ID",
   },
   {
-    accessorKey: "full_name",
+    accessorKey: "teacher.full_name",
     header: "Họ và tên",
+    cell: ({ row }) => row.original.teacher?.full_name || "",
   },
   {
-    accessorKey: "email",
+    accessorKey: "teacher.email",
     header: "Email",
+    cell: ({ row }) => row.original.teacher?.email || "",
   },
   {
-    accessorKey: "phone",
+    accessorKey: "teacher.phone",
     header: "Số điện thoại",
+    cell: ({ row }) => row.original.teacher?.phone || "",
   },
   {
-    accessorKey: "specialization",
+    accessorKey: "teacher.specialization",
     header: "Chuyên môn",
+    cell: ({ row }) => row.original.teacher?.specialization || "",
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "created_at",
     header: "Ngày tạo",
     cell: ({ row }) => {
-      const date = row.getValue("createdAt") as string;
+      const date = row.getValue("created_at") as string;
       return formatDate(date);
     }
   },

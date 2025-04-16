@@ -3,7 +3,7 @@ import { Teacher, TeacherFormData } from "../types";
 
 export const teacherService = {
   getAllTeachers: async (page: number = 1) => {
-    const response = await axiosInstance.get(`/teachers?page=${page}`);
+    const response = await axiosInstance.get(`/users?role=teacher&page=${page}`);
     return response.data;
   },
 

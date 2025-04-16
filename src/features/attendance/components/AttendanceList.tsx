@@ -33,7 +33,7 @@ export default function AttendanceList() {
         <CreateAttendance />
       </div>
 
-      <div className="border rounded-md">
+      <div>
         <DataTable columns={columns} data={attendances} loading={loading} />
       </div>
 

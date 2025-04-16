@@ -20,7 +20,7 @@ export default function TeacherActionMenu({ teacher }: { teacher: Teacher }) {
 
   const handleDeleteTeacher = async () => {
     try {
-      await deleteTeacher(teacher.id);
+      await deleteTeacher(teacher.teacher?.id || 0);
       await getAllTeachers(1);
       setIsDeleteDialogOpen(false);
     } catch (error) {
@@ -29,7 +29,7 @@ export default function TeacherActionMenu({ teacher }: { teacher: Teacher }) {
   };
 
   const handleViewDetail = () => {
-    navigate(`/teachers/${teacher.id}`);
+    navigate(`/teachers/${teacher.teacher?.id || 0}`);
   };
 
   return (
@@ -57,7 +57,7 @@ export default function TeacherActionMenu({ teacher }: { teacher: Teacher }) {
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={handleDeleteTeacher}
         title="Xác nhận xóa"
-        description={`Bạn có chắc chắn muốn xóa giáo viên ${teacher.full_name}?`}
+        description={`Bạn có chắc chắn muốn xóa giáo viên ${teacher.teacher?.full_name || teacher.name}?`}
       />
     </>
   );

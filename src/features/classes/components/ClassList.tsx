@@ -33,7 +33,7 @@ export default function ClassList() {
         <CreateClass />
       </div>
 
-      <div className="border rounded-md">
+      <div>
         <DataTable columns={columns} data={classes} loading={loading} />
       </div>
 

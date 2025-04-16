@@ -87,16 +87,16 @@ export default function TeacherDetail() {
           <Card className="md:col-span-1">
             <CardHeader className="text-center">
               <Avatar className="mx-auto h-24 w-24">
-                {teacher.avatar_url ? (
-                  <AvatarImage src={teacher.avatar_url} alt={teacher.full_name} />
+                {teacher.teacher?.avatar_url ? (
+                  <AvatarImage src={teacher.teacher.avatar_url} alt={teacher.teacher.full_name} />
                 ) : (
                   <AvatarFallback>
-                    {teacher.full_name.charAt(0).toUpperCase()}
+                    {teacher.teacher?.full_name.charAt(0).toUpperCase() || teacher.name.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 )}
               </Avatar>
-              <CardTitle className="mt-2">{teacher.full_name}</CardTitle>
-              <Badge className="mt-1">{teacher.specialization}</Badge>
+              <CardTitle className="mt-2">{teacher.teacher?.full_name || teacher.name}</CardTitle>
+              <Badge className="mt-1">{teacher.teacher?.specialization || ''}</Badge>
             </CardHeader>
           </Card>
 
@@ -111,35 +111,35 @@ export default function TeacherDetail() {
                   <User className="text-gray-500" />
                   <div>
                     <p className="text-sm text-gray-500">Họ và tên</p>
-                    <p className="font-medium">{teacher.full_name}</p>
+                    <p className="font-medium">{teacher.teacher?.full_name || teacher.name}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="text-gray-500" />
                   <div>
                     <p className="text-sm text-gray-500">Email</p>
-                    <p className="font-medium">{teacher.email}</p>
+                    <p className="font-medium">{teacher.teacher?.email || teacher.email}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone className="text-gray-500" />
                   <div>
                     <p className="text-sm text-gray-500">Số điện thoại</p>
-                    <p className="font-medium">{teacher.phone}</p>
+                    <p className="font-medium">{teacher.teacher?.phone || ''}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <BookOpen className="text-gray-500" />
                   <div>
                     <p className="text-sm text-gray-500">Chuyên môn</p>
-                    <p className="font-medium">{teacher.specialization}</p>
+                    <p className="font-medium">{teacher.teacher?.specialization || ''}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Calendar className="text-gray-500" />
                   <div>
                     <p className="text-sm text-gray-500">Ngày tạo</p>
-                    <p className="font-medium">{formatDate(teacher.createdAt)}</p>
+                    <p className="font-medium">{formatDate(teacher.created_at)}</p>
                   </div>
                 </div>
               </div>

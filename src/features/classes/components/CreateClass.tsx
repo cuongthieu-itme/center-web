@@ -147,7 +147,7 @@ export default function CreateClass() {
                           key={teacher.id}
                           value={teacher.id.toString()}
                         >
-                          {teacher.full_name}
+                          {teacher.teacher?.full_name || teacher.name}
                         </SelectItem>
                       ))}
                     </SelectContent>

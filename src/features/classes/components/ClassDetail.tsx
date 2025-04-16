@@ -112,7 +112,7 @@ export default function ClassDetail() {
                   <div>
                     <p className="text-sm text-gray-500">Giáo viên chủ nhiệm</p>
                     <p className="font-medium">
-                      {teacher ? teacher.full_name : "Chưa phân công"}
+                      {teacher ? teacher.teacher?.full_name || teacher.name : "Chưa phân công"}
                     </p>
                   </div>
                 </div>
