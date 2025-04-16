@@ -1,8 +1,8 @@
 import {
-    SidebarGroup,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
+  SidebarGroup,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { AdminView, ManagerView } from "@/lib/constants";
 import { ItemType, Role } from "@/types";
@@ -65,7 +65,7 @@ export default function NavMain({
           <SidebarMenuButton isActive={pathname.startsWith("/attendance")} asChild>
             <Link to="/attendance" className="flex gap-2 items-center">
               <ClipboardCheck />
-              <span>Điểm danh</span>
+              <span>Lịch sử điểm danh</span>
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>

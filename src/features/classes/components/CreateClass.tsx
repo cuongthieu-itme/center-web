@@ -1,27 +1,27 @@
 import { Button } from "@/components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { useTeacherStore } from "@/features/teachers/hooks/useTeacherStore";
 import { Teacher } from "@/features/teachers/types";
@@ -120,7 +120,7 @@ export default function CreateClass() {
                 <FormItem>
                   <FormLabel>Tên lớp</FormLabel>
                   <FormControl>
-                    <Input placeholder="Lớp 10A1" {...field} />
+                    <Input placeholder="Tên lớp" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

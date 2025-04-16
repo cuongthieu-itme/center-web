@@ -34,7 +34,7 @@ export default function TeacherList() {
       </div>
 
       <div>
-        <DataTable columns={columns} data={teachers} loading={loading} />
+        <DataTable columns={columns} data={teachers} loading={loading} filterName="teacher.full_name" />
       </div>
 
       {teachersPagination.last_page > 1 && (

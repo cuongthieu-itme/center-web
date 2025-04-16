@@ -2,6 +2,10 @@ export type Class = {
   id: number;
   class_name: string;
   teacher_id: number;
+  teacher?: {
+    id: number;
+    full_name: string;
+  };
   schedule: string;
   createdAt: string;
 };

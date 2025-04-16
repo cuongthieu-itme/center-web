@@ -2,7 +2,7 @@ import LoadingSpinner from "@/components/shared/loading-spinner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTeacherStore } from "@/features/teachers/hooks/useTeacherStore";
-import { Teacher } from "@/features/teachers/types";
+import { TeacherDetail } from "@/features/teachers/types";
 import { formatDate } from "@/lib/utils";
 import { ArrowLeft, Calendar, School, User } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ export default function ClassDetail() {
   const { getClassById } = useClassStore();
   const { getTeacherById } = useTeacherStore();
   const [classData, setClassData] = useState<Class | null>(null);
-  const [teacher, setTeacher] = useState<Teacher | null>(null);
+  const [teacher, setTeacher] = useState<TeacherDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -80,6 +80,9 @@ export default function ClassDetail() {
     );
   }
 
+  console.log(teacher);
+  
+
   return (
     <div className="container mx-auto">
       <div className="max-w-4xl mx-auto">
@@ -112,7 +115,7 @@ export default function ClassDetail() {
                   <div>
                     <p className="text-sm text-gray-500">Giáo viên chủ nhiệm</p>
                     <p className="font-medium">
-                      {teacher ? teacher.teacher?.full_name || teacher.name : "Chưa phân công"}
+                      {teacher ? teacher.full_name : "Chưa phân công"}
                     </p>
                   </div>
                 </div>
