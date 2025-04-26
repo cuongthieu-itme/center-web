@@ -20,7 +20,7 @@ export default function UserList() {
   const { getAllUsers, users, usersPagination, loading, setSelectedRole } = useUserStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   useEffect(() => {
     const roleParam = searchParams.get("role");
     setSelectedRole(roleParam);
@@ -55,8 +55,8 @@ export default function UserList() {
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">Danh sách người dùng</h1>
           <div className="flex gap-4">
-            <Select 
-              onValueChange={handleRoleChange} 
+            <Select
+              onValueChange={handleRoleChange}
               defaultValue={searchParams.get("role") || "all"}
             >
               <SelectTrigger className="w-[180px]">
@@ -76,26 +76,37 @@ export default function UserList() {
           columns={columns}
           data={users}
           filterName={filterName}
+          loading={loading}
         />
-        <div className="flex items-center justify-end space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1 || loading}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleNextPage}
-            disabled={currentPage === usersPagination.last_page || loading}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
+
+        {usersPagination.last_page > 1 && (
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1 || loading}
+            >
+              <ChevronLeft className="h-4 w-4" />
+              <span className="sr-only">Previous Page</span>
+            </Button>
+            <div className="flex items-center gap-1">
+              <span className="text-sm font-medium">{currentPage}</span>
+              <span className="text-sm text-gray-400">của</span>
+              <span className="text-sm font-medium">{usersPagination.last_page}</span>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleNextPage}
+              disabled={currentPage === usersPagination.last_page || loading}
+            >
+              <ChevronRight className="h-4 w-4" />
+              <span className="sr-only">Next Page</span>
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
-} 
+}

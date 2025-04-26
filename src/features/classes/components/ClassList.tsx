@@ -9,7 +9,7 @@ import CreateClass from "./CreateClass";
 export default function ClassList() {
   const { getAllClasses, classes, classesPagination, loading } = useClassStore();
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   useEffect(() => {
     getAllClasses(currentPage);
   }, [getAllClasses, currentPage]);
@@ -66,4 +66,4 @@ export default function ClassList() {
       )}
     </div>
   );
-} 
+}
