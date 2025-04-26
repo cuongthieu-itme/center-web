@@ -46,6 +46,7 @@ export type ItemType = {
   title: string;
   url: string;
   icon: LucideIcon;
+  permissions?: string[];
 };
 
 export type ProductType = {

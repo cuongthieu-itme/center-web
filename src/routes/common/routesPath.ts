@@ -17,5 +17,6 @@ export const PROTECTED_ROUTES = {
   CLASSES_DETAIL: "/classes/:id",
   ATTENDANCE_LIST: "/attendance",
   ATTENDANCE_DETAIL: "/attendance/:id",
+  ATTENDANCE_TRACKER: "/attendance-tracker",
   ORDERS_LIST: "/orders",
 };

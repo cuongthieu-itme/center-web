@@ -1,27 +1,99 @@
-import { BookA, Calendar, ClipboardCheck, History, LayoutDashboard, List, PlusCircle, School, User, UserPlus, Users } from "lucide-react";
+import {
+  Calendar,
+  ClipboardCheck,
+  History,
+  LayoutDashboard,
+  List,
+  PlusCircle,
+  School,
+  Timer,
+  User,
+  UserPlus,
+  Users
+} from "lucide-react";
 import { ItemType } from "../types";
 
-export const AdminView: ItemType[] = [
+// Common menu items for all roles
+export const CommonMenuItems: ItemType[] = [
   {
     title: "Tổng quan",
     url: `/dashboard`,
     icon: LayoutDashboard,
+    permissions: ["admin", "manager", "teacher"],
   },
   {
-    title: "Người dùng",
-    url: `/users`,
-    icon: User,
+    title: "Điểm danh",
+    url: `/attendance-tracker`,
+    icon: Timer,
+    permissions: ["admin", "manager", "teacher"],
   }
 ];
 
-export const ManagerView: ItemType[] = [
+// Admin specific menu items
+export const AdminMenuItems: ItemType[] = [
   {
-    title: "View Orders",
-    url: `/dashboard/orders-list`,
-    icon: BookA,
-  },
+    title: "Quản lý người dùng",
+    url: `/users`,
+    icon: User,
+    permissions: ["admin"],
+  }
 ];
 
+// Manager specific menu items
+export const ManagerMenuItems: ItemType[] = [];
+
+// Education management menu items
+export const EducationMenuItems: ItemType[] = [
+  {
+    title: "Giáo viên",
+    url: "/teachers",
+    icon: User,
+    permissions: ["admin", "manager"],
+  },
+  {
+    title: "Học sinh",
+    url: "/students",
+    icon: Users,
+    permissions: ["admin", "manager", "teacher"],
+  },
+  {
+    title: "Lớp học",
+    url: "/classes",
+    icon: School,
+    permissions: ["admin", "manager", "teacher"],
+  }
+];
+
+// Attendance menu items
+export const AttendanceMenuItems: ItemType[] = [
+  {
+    title: "Lịch sử điểm danh",
+    url: "/attendance",
+    icon: ClipboardCheck,
+    permissions: ["admin", "manager", "teacher"],
+  }
+];
+
+// Helper function to filter menu items by role
+export const getMenuItemsByRole = (role: string) => {
+  const items = [
+    ...CommonMenuItems,
+    ...AdminMenuItems,
+    ...ManagerMenuItems,
+    ...EducationMenuItems,
+    ...AttendanceMenuItems
+  ];
+
+  return items.filter(item =>
+    item.permissions && item.permissions.includes(role)
+  );
+};
+
+// For backward compatibility
+export const AdminView = getMenuItemsByRole("admin");
+export const ManagerView = getMenuItemsByRole("manager");
+
+// Legacy views - keep for backward compatibility
 export const TeacherView: ItemType[] = [
   {
     title: "Quản lý giáo viên",

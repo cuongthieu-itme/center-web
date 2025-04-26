@@ -13,6 +13,9 @@ const DashboardPage = lazy(
 const OrdersListPage = lazy(
   () => import("../../pages/dashboard/orders-list-page")
 );
+const AttendanceTrackerPage = lazy(
+  () => import("../../pages/attendance-tracker")
+);
 
 export const authenticationRoutes = [
   { path: AUTH_ROUTES.LOGIN, element: <LoginPage /> },
@@ -33,5 +36,6 @@ export const protectedRoutes = [
   { path: PROTECTED_ROUTES.CLASSES_DETAIL, element: <ClassDetail /> },
   { path: PROTECTED_ROUTES.ATTENDANCE_LIST, element: <AttendanceList /> },
   { path: PROTECTED_ROUTES.ATTENDANCE_DETAIL, element: <AttendanceDetail /> },
+  { path: PROTECTED_ROUTES.ATTENDANCE_TRACKER, element: <AttendanceTrackerPage /> },
   { path: PROTECTED_ROUTES.ORDERS_LIST, element: <OrdersListPage /> },
 ];
