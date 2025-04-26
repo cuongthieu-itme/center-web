@@ -21,7 +21,7 @@ export default function EditUser() {
       try {
         setLoading(true);
         setError(null);
-        
+
         if (!id) {
           setError("Không tìm thấy ID người dùng");
           return;
@@ -148,20 +148,6 @@ export default function EditUser() {
                       className="h-12"
                     />
                   </div>
-
-                  <div className="grid gap-2">
-                    <Label htmlFor="avatar" className="flex items-center gap-2">
-                      <Image className="h-4 w-4" />
-                      Avatar URL
-                    </Label>
-                    <Input
-                      id="avatar"
-                      value={user.avatar || ""}
-                      onChange={(e) => setUser({ ...user, avatar: e.target.value })}
-                      placeholder="Nhập URL avatar"
-                      className="h-12"
-                    />
-                  </div>
                 </div>
 
                 {/* Action Buttons */}
@@ -185,4 +171,4 @@ export default function EditUser() {
       </div>
     </div>
   );
-} 
+}
