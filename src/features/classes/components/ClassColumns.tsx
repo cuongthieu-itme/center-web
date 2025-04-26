@@ -21,10 +21,6 @@ export const columns: ColumnDef<Class>[] = [
     }
   },
   {
-    accessorKey: "schedule",
-    header: "Lịch học",
-  },
-  {
     accessorKey: "createdAt",
     header: "Ngày tạo",
     cell: ({ row }) => {
@@ -40,4 +36,4 @@ export const columns: ColumnDef<Class>[] = [
       return <ClassActionMenu classItem={row.original} />;
     },
   },
-]; 
+];

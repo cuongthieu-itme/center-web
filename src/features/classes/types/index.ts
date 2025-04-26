@@ -6,14 +6,12 @@ export type Class = {
     id: number;
     full_name: string;
   };
-  schedule: string;
   createdAt: string;
 };
 
 export type ClassFormData = {
   class_name: string;
   teacher_id: number;
-  schedule: string;
 };
 
 export type ClassPagination = {
@@ -23,4 +21,4 @@ export type ClassPagination = {
   per_page: number;
   from: number;
   to: number;
-}; 
+};

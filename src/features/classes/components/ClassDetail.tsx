@@ -25,7 +25,7 @@ export default function ClassDetail() {
       try {
         setLoading(true);
         setError(null);
-        
+
         if (!id) {
           setError("Không tìm thấy ID lớp học");
           return;
@@ -34,7 +34,7 @@ export default function ClassDetail() {
         const classResult = await getClassById(Number(id));
         if (classResult) {
           setClassData(classResult);
-          
+
           // Fetch teacher data if teacher_id exists
           if (classResult.teacher_id) {
             const teacherResult = await getTeacherById(classResult.teacher_id);
@@ -81,7 +81,7 @@ export default function ClassDetail() {
   }
 
   console.log(teacher);
-  
+
 
   return (
     <div className="container mx-auto">
@@ -122,13 +122,6 @@ export default function ClassDetail() {
                 <div className="flex items-center gap-3">
                   <Calendar className="text-gray-500" />
                   <div>
-                    <p className="text-sm text-gray-500">Lịch học</p>
-                    <p className="font-medium">{classData.schedule}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Calendar className="text-gray-500" />
-                  <div>
                     <p className="text-sm text-gray-500">Ngày tạo</p>
                     <p className="font-medium">{formatDate(classData.createdAt)}</p>
                   </div>
@@ -140,4 +133,4 @@ export default function ClassDetail() {
       </div>
     </div>
   );
-} 
+}

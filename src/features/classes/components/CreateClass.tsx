@@ -36,7 +36,6 @@ import { ClassFormData } from "../types";
 const classSchema = z.object({
   class_name: z.string().min(1, { message: "Tên lớp không được để trống" }),
   teacher_id: z.number().min(1, { message: "Vui lòng chọn giáo viên" }),
-  schedule: z.string().min(1, { message: "Lịch học không được để trống" }),
 });
 
 export default function CreateClass() {
@@ -44,7 +43,7 @@ export default function CreateClass() {
   const { createClass, loading, getAllClasses } = useClassStore();
   const { getAllTeachers } = useTeacherStore();
   const [teachers, setTeachers] = useState<Teacher[]>([]);
-  
+
   useEffect(() => {
     const loadTeachers = async () => {
       try {
@@ -55,7 +54,7 @@ export default function CreateClass() {
         console.error("Error loading teachers:", error);
       }
     };
-    
+
     loadTeachers();
   }, [getAllTeachers]);
 
@@ -64,23 +63,21 @@ export default function CreateClass() {
     defaultValues: {
       class_name: "",
       teacher_id: 0,
-      schedule: "",
     },
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Reset form when dialog opens
   useEffect(() => {
     if (open) {
       form.reset({
         class_name: "",
         teacher_id: 0,
-        schedule: "",
       });
     }
   }, [open, form]);
-  
+
   const onSubmit = async (values: ClassFormData) => {
     try {
       setIsSubmitting(true);
@@ -156,29 +153,16 @@ export default function CreateClass() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="schedule"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Lịch học</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Thứ 2, 4, 6 (7:30 - 11:30)" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <div className="flex justify-end gap-3 pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={() => setOpen(false)}
               >
                 Hủy
               </Button>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isSubmitting || loading}
               >
                 {isSubmitting ? "Đang tạo..." : "Tạo lớp học"}
@@ -189,4 +173,4 @@ export default function CreateClass() {
       </DialogContent>
     </Dialog>
   );
-} 
+}
