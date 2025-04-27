@@ -10,7 +10,7 @@ const passwordSchema = z
   .string()
   .trim()
   .min(1, "Vui lòng nhập mật khẩu")
-  .min(8, "Mật khẩu phải có ít nhất 8 ký tự");
+  .min(6, "Mật khẩu phải có ít nhất 6 ký tự");
 
 export const registerSchema = z.object({
   name: z.string().trim().min(1, "Vui lòng nhập tên").max(255, "Tên quá dài"),
