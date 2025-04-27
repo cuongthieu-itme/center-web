@@ -53,7 +53,8 @@ export default function NavMain({
   const educationItems = menuItems.filter(item =>
     item.url.includes("teachers") ||
     item.url.includes("students") ||
-    item.url.includes("classes")
+    item.url.includes("classes") ||
+    item.url.includes("class-sessions")
   );
 
   const adminItems = menuItems.filter(item =>

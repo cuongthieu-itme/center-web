@@ -61,7 +61,13 @@ export const EducationMenuItems: ItemType[] = [
     url: "/classes",
     icon: School,
     permissions: ["admin", "manager", "teacher"],
-  }
+  },
+  {
+    title: "Buổi học",
+    url: "/class-sessions",
+    icon: Timer,
+    permissions: ["admin", "manager", "teacher"],
+  },
 ];
 
 // Attendance menu items
