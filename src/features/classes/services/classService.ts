@@ -30,5 +30,18 @@ export const classService = {
   deleteClass: async (id: number) => {
     const response = await axiosInstance.delete(`/classes/${id}`);
     return response.data;
+  },
+
+  addStudentToClass: async (classId: number, studentId: number) => {
+    const response = await axiosInstance.post("/student-classes", {
+      class_id: classId,
+      student_id: studentId
+    });
+    return response.data;
+  },
+
+  removeStudentFromClass: async (classId: number, studentId: number) => {
+    const response = await axiosInstance.delete(`/student-classes/${classId}/${studentId}`);
+    return response.data;
   }
-}; 
+};

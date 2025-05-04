@@ -13,6 +13,8 @@ interface ClassState {
   deleteClass: (id: number) => Promise<void>;
   getClassById: (id: number) => Promise<Class | null>;
   updateClass: (id: number, classData: Partial<Class>) => Promise<void>;
+  addStudentToClass: (classId: number, studentId: number) => Promise<void>;
+  removeStudentFromClass: (classId: number, studentId: number) => Promise<void>;
 }
 
 export const useClassStore = create<ClassState>((set, get) => ({
@@ -46,7 +48,7 @@ export const useClassStore = create<ClassState>((set, get) => ({
     set({ loading: true });
     try {
       const response = await classService.getAllClasses(page);
-      set({ 
+      set({
         classes: response.data,
         classesPagination: {
           current_page: response.current_page,
@@ -70,7 +72,7 @@ export const useClassStore = create<ClassState>((set, get) => ({
     set({ loading: true });
     try {
       const response = await classService.getClassesByTeacherId(teacherId, page);
-      set({ 
+      set({
         classes: response.data,
         classesPagination: {
           current_page: response.current_page,
@@ -124,5 +126,33 @@ export const useClassStore = create<ClassState>((set, get) => ({
       toast.error(err?.response?.data?.message || "An error occurred");
       throw error;
     }
-  }
-})); 
+  },
+
+  addStudentToClass: async (classId: number, studentId: number) => {
+    set({ loading: true });
+    try {
+      const response = await classService.addStudentToClass(classId, studentId);
+      toast.success(response.message);
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
+      throw error;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  removeStudentFromClass: async (classId: number, studentId: number) => {
+    set({ loading: true });
+    try {
+      const response = await classService.removeStudentFromClass(classId, studentId);
+      toast.success(response.message);
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
+      throw error;
+    } finally {
+      set({ loading: false });
+    }
+  },
+}));

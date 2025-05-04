@@ -7,7 +7,9 @@ export type Student = {
   address: string;
   avatar_url?: string;
   user_id: number;
+  class_id?: number;
   createdAt: string;
+  updatedAt: string;
   deleted_at?: string | null;
 };
 
@@ -51,4 +53,5 @@ export type StudentAttendance = {
   check_out_time: string | null;
   date: string;
   createdAt: string;
-}; 
+  updatedAt: string;
+};
