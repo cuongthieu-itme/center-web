@@ -1,12 +1,11 @@
 import LoadingSpinner from "@/components/shared/loading-spinner";
-import { DataTable } from "@/components/shared/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataTable } from "@/components/shared/table";
 import { useTeacherStore } from "@/features/teachers/hooks/useTeacherStore";
 import { TeacherDetail } from "@/features/teachers/types";
 import { formatDate } from "@/lib/utils";
-import { ArrowLeft, Calendar, Mail, Pencil, Phone, School, User } from "lucide-react";
+import { ArrowLeft, Calendar, Pencil, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useClassStore } from "../hooks/useClassStore";
@@ -152,7 +151,7 @@ export default function ClassDetail() {
           <CardContent className="pt-6">
             <DataTable
               columns={classStudentColumns}
-              data={classData.students || []}
+              data={[]}
               loading={loading}
             />
           </CardContent>

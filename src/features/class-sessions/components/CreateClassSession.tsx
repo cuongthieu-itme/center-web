@@ -30,7 +30,6 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useClassSessionStore } from "../hooks/useClassSessionStore";
-import { ClassSessionFormData } from "../types";
 
 const sessionSchema = z.object({
   class_id: z.number().min(1, { message: "Vui lòng chọn lớp" }),

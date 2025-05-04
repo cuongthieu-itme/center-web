@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useStudentStore } from "@/features/students/hooks/useStudentStore";
-import { Student } from "@/features/students/types";
 import { ArrowLeft, Calendar, Clock, Mail, MapPin, Phone, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -39,11 +38,11 @@ const formatTimeOnly = (timeString: string | null): string => {
   try {
     // Handle both ISO string and time-only string
     const time = timeString.includes('T') ? new Date(timeString) : new Date(`2000-01-01T${timeString}`);
-    return time.toLocaleTimeString('vi-VN', { 
-      hour: '2-digit', 
-      minute: '2-digit', 
+    return time.toLocaleTimeString('vi-VN', {
+      hour: '2-digit',
+      minute: '2-digit',
       second: '2-digit',
-      hour12: false 
+      hour12: false
     });
   } catch {
     return "Invalid time";
@@ -69,9 +68,8 @@ export default function AttendanceDetail() {
   const { id } = useParams();
   const { getAttendanceById } = useAttendanceStore();
   const { getStudentById } = useStudentStore();
-  const [attendance, setAttendance] = useState<Attendance | null>(null);
-  const [student, setStudent] = useState<Student | null>(null);
   const [loading, setLoading] = useState(true);
+  const [attendance, setAttendance] = useState<Attendance | null>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -80,7 +78,7 @@ export default function AttendanceDetail() {
       try {
         setLoading(true);
         setError(null);
-        
+
         if (!id) {
           setError("Không tìm thấy ID điểm danh");
           return;
@@ -89,12 +87,12 @@ export default function AttendanceDetail() {
         const attendanceResult = await getAttendanceById(Number(id));
         if (attendanceResult) {
           setAttendance(attendanceResult);
-          
+
           // Fetch student data if student_id exists
           if (attendanceResult.student_id) {
             const studentResult = await getStudentById(attendanceResult.student_id);
             if (studentResult) {
-              setStudent(studentResult);
+              // setStudent(studentResult);
             }
           }
         } else {
@@ -336,4 +334,4 @@ export default function AttendanceDetail() {
       </div>
     </div>
   );
-} 
+}

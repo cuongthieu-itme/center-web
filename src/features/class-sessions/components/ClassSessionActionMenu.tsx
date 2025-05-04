@@ -52,10 +52,10 @@ export default function ClassSessionActionMenu({ sessionItem }: { sessionItem: C
         </DropdownMenuContent>
       </DropdownMenu>
       <ConfirmDialog
-        open={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-        title="Xác nhận xoá buổi học"
-        description={`Bạn có chắc chắn muốn xoá buổi học "${sessionItem.session_name}"?`}
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        title="Xác nhận xoá"
+        description={`Bạn có chắc chắn muốn xoá buổi học ngày "${sessionItem.session_date}"?`}
         onConfirm={handleDeleteSession}
       />
     </>

@@ -21,11 +21,10 @@ const ClassSessionDetail = () => {
       <h1 className="text-2xl font-bold mb-4">Chi tiết buổi học</h1>
       <div className="space-y-2">
         <div><b>ID:</b> {session.id}</div>
-        <div><b>Tên buổi học:</b> {session.session_name}</div>
         <div><b>Mã lớp:</b> {session.class_id}</div>
-        <div><b>Bắt đầu:</b> {session.start_time}</div>
-        <div><b>Kết thúc:</b> {session.end_time}</div>
-        <div><b>Ngày tạo:</b> {session.createdAt}</div>
+        <div><b>Ngày học:</b> {session.session_date}</div>
+        <div><b>Thời gian bắt đầu:</b> {session.start_time}</div>
+        <div><b>Thời gian kết thúc:</b> {session.end_time}</div>
       </div>
     </div>
   );
