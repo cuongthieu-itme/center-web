@@ -9,7 +9,8 @@ import {
   Timer,
   User,
   UserPlus,
-  Users
+  Users,
+  Lock
 } from "lucide-react";
 import { ItemType } from "../types";
 
@@ -80,6 +81,16 @@ export const AttendanceMenuItems: ItemType[] = [
   }
 ];
 
+// Student specific menu items
+export const StudentMenuItems: ItemType[] = [
+  {
+    title: "Đổi mật khẩu",
+    url: "/change-password",
+    icon: Lock,
+    permissions: ["student"],
+  }
+];
+
 // Helper function to filter menu items by role
 export const getMenuItemsByRole = (role: string) => {
   const items = [
@@ -87,7 +98,8 @@ export const getMenuItemsByRole = (role: string) => {
     ...AdminMenuItems,
     ...ManagerMenuItems,
     ...EducationMenuItems,
-    ...AttendanceMenuItems
+    ...AttendanceMenuItems,
+    ...StudentMenuItems
   ];
 
   return items.filter(item =>
@@ -98,6 +110,7 @@ export const getMenuItemsByRole = (role: string) => {
 // For backward compatibility
 export const AdminView = getMenuItemsByRole("admin");
 export const ManagerView = getMenuItemsByRole("manager");
+export const StudentRoleView = getMenuItemsByRole("student");
 
 // Legacy views - keep for backward compatibility
 export const TeacherView: ItemType[] = [

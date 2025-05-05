@@ -49,7 +49,7 @@ export const studentService = {
   }) => {
     // Tạo FormData hoặc sử dụng customFormData nếu được cung cấp
     const formData = options?.customFormData || new FormData();
-    
+
     // Nếu không có customFormData, thêm file vào formData
     if (!options?.customFormData) {
       formData.append('file', file);
@@ -62,7 +62,7 @@ export const studentService = {
       },
       onUploadProgress: options?.onUploadProgress
     });
-    
+
     // Response có cấu trúc: { message: string, path: string }
     // ví dụ: { message: "Tải file thành công!", path: "/storage/uploads/1746439474.png" }
     return response.data;
@@ -82,11 +82,27 @@ export const studentService = {
     if (!filename) {
       return options?.defaultImage || '';
     }
-    
+
     // Xây dựng URL đầy đủ
     const baseUrl = import.meta.env.VITE_API_URL;
     const endpoint = options?.baseEndpoint || '/api/view-file/';
-    
+
     return `${baseUrl}${endpoint}${filename}`;
   }
-}; 
+  ,// Thêm phương thức changePassword vào studentService
+  changePassword: async (data: ChangePasswordData) => {
+    const response = await axiosInstance.post("/students/change-password", data);
+    return response.data;
+  }
+};
+
+// Thêm vào file studentService.ts hiện có
+
+// Thêm type cho dữ liệu đổi mật khẩu
+export type ChangePasswordData = {
+  student_id: number;
+  current_password: string;
+  new_password: string;
+  confirm_password: string;
+};
+

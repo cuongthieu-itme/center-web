@@ -5,7 +5,6 @@ import { AUTH_ROUTES } from "./common/routesPath";
 
 export default function ProtectedRoute() {
   const { user, isAuth, loading } = useAuthStore();
-
   // Show loading spinner while checking authentication
   if (loading) return <LoadingSpinner />;
 
