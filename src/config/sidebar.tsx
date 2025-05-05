@@ -69,7 +69,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: "Theo dõi điểm danh",
-    href: "/attendance-tracker",
+    href: "/tracker",
     icon: ClipboardList,
     roles: ["admin", "teacher"],
   },

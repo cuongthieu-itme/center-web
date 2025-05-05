@@ -23,7 +23,7 @@ export const CommonMenuItems: ItemType[] = [
   },
   {
     title: "Điểm danh",
-    url: `/attendance-tracker`,
+    url: `/tracker`,
     icon: Timer,
     permissions: ["admin", "manager", "teacher"],
   }

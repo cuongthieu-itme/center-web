@@ -15,7 +15,7 @@ const OrdersListPage = lazy(
   () => import("../../pages/dashboard/orders-list-page")
 );
 const AttendanceTrackerPage = lazy(
-  () => import("../../pages/attendance-tracker")
+  () => import("../../pages/tracker")
 );
 
 export const authenticationRoutes = [
