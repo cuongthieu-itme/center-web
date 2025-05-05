@@ -19,7 +19,7 @@ export default function NavMain({
 
   // Get menu items based on user role
   const menuItems = getMenuItemsByRole(roleStr);
-
+  
   // Group menu items by section
   const getMenuSection = (items: ItemType[], sectionTitle: string) => {
     return (
@@ -43,7 +43,7 @@ export default function NavMain({
 
   // Organize items by section
   const dashboardItems = menuItems.filter(item =>
-    item.url.includes("dashboard") || item.title === "Tổng quan"
+    item.url.includes("dashboard") || item.title === "Tổng quan" || item.title === "Đổi mật khẩu"
   );
 
   const attendanceItems = menuItems.filter(item =>

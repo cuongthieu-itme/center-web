@@ -100,7 +100,7 @@ export const studentService = {
 
 // Thêm type cho dữ liệu đổi mật khẩu
 export type ChangePasswordData = {
-  student_id: number;
+  user_id: number;
   current_password: string;
   new_password: string;
   confirm_password: string;

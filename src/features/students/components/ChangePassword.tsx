@@ -67,7 +67,7 @@ export default function ChangePassword() {
       setLoading(true);
       
       await studentService.changePassword({
-        student_id: studentId,
+        user_id: studentId,
         current_password: values.current_password,
         new_password: values.new_password,
         confirm_password: values.confirm_password,
