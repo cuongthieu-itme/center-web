@@ -18,6 +18,7 @@ export default function StudentDetail() {
     getStudentById, 
     getStudentClasses, 
     getStudentAttendance,
+    getFileUrl,
     studentClasses,
     studentAttendance,
     loading 
@@ -103,7 +104,7 @@ export default function StudentDetail() {
             <CardHeader className="text-center">
               <Avatar className="mx-auto h-24 w-24">
                 {student.avatar_url ? (
-                  <AvatarImage src={student.avatar_url} alt={student.full_name} />
+                  <AvatarImage src={getFileUrl(student.avatar_url)} alt={student.full_name} />
                 ) : (
                   <AvatarFallback>
                     {student.full_name.charAt(0).toUpperCase()}

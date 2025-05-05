@@ -3,19 +3,24 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Calendar, Home, Mail, Phone, User as UserIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowLeft, Calendar, Home, Mail, Phone, Upload, User as UserIcon } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStudentStore } from "../hooks/useStudentStore";
 import { Student } from "../types";
+import { toast } from "sonner";
 
 export default function EditStudent() {
   const { id } = useParams();
-  const { getStudentById, updateStudent } = useStudentStore();
+  const { getStudentById, updateStudent, uploadFile, getFileUrl } = useStudentStore();
   const [student, setStudent] = useState<Student | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,6 +37,10 @@ export default function EditStudent() {
         const studentData = await getStudentById(Number(id));
         if (studentData) {
           setStudent(studentData);
+          // If student has an avatar, set the preview
+          if (studentData.avatar_url) {
+            setAvatarPreview(getFileUrl(studentData.avatar_url));
+          }
         } else {
           setError("Không tìm thấy học sinh");
         }
@@ -44,7 +53,21 @@ export default function EditStudent() {
     };
 
     fetchStudent();
-  }, [id, getStudentById]);
+  }, [id, getStudentById, getFileUrl]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setAvatarFile(file);
+    // Create a preview URL
+    const previewUrl = URL.createObjectURL(file);
+    setAvatarPreview(previewUrl);
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,13 +79,37 @@ export default function EditStudent() {
     try {
       setSubmitting(true);
       
+      // Upload the avatar file first if there is one
+      let avatarFilename = student.avatar_url;
+      if (avatarFile) {
+        avatarFilename = await uploadFile(avatarFile, {
+          onUploadProgress: (progressEvent) => {
+            const percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / (progressEvent.total || 100)
+            );
+            setUploadProgress(percentCompleted);
+          },
+          silent: true // Tắt thông báo tự động từ store
+        });
+        
+        // Kiểm tra và hiển thị thông báo dựa vào kết quả
+        if (avatarFilename) {
+          toast.success("Tải ảnh lên thành công");
+        } else {
+          toast.error("Không thể tải ảnh lên. Vui lòng thử lại");
+          setSubmitting(false);
+          return;
+        }
+      }
+      
       // Only include fields that can be updated
       const updatedData = {
         full_name: student.full_name,
         phone: student.phone,
         email: student.email,
         address: student.address,
-        dob: student.dob
+        dob: student.dob,
+        avatar_url: avatarFilename
       };
       
       await updateStudent(Number(id), updatedData);
@@ -71,6 +118,7 @@ export default function EditStudent() {
       console.error("Error updating student:", err);
     } finally {
       setSubmitting(false);
+      setUploadProgress(0);
     }
   };
 
@@ -117,6 +165,50 @@ export default function EditStudent() {
             </CardHeader>
             <CardContent className="pt-6">
               <div className="grid gap-8">
+                {/* Avatar Upload Section */}
+                <div className="flex flex-col items-center gap-4">
+                  <div 
+                    className="relative w-32 h-32 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-50 flex items-center justify-center cursor-pointer"
+                    onClick={handleUploadClick}
+                  >
+                    {avatarPreview ? (
+                      <img 
+                        src={avatarPreview} 
+                        alt="Avatar Preview" 
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <UserIcon className="h-16 w-16 text-gray-400" />
+                    )}
+                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                      <Upload className="h-8 w-8 text-white" />
+                    </div>
+                  </div>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    size="sm"
+                    onClick={handleUploadClick}
+                  >
+                    {avatarFile ? 'Thay đổi ảnh' : 'Tải lên ảnh đại diện'}
+                  </Button>
+                  {uploadProgress > 0 && uploadProgress < 100 && (
+                    <div className="w-full max-w-xs bg-gray-200 rounded-full h-2.5">
+                      <div 
+                        className="bg-blue-600 h-2.5 rounded-full" 
+                        style={{ width: `${uploadProgress}%` }}
+                      ></div>
+                    </div>
+                  )}
+                </div>
+
                 {/* Form Fields */}
                 <div className="grid gap-6">
                   <div className="grid gap-2">
@@ -207,4 +299,4 @@ export default function EditStudent() {
       </div>
     </div>
   );
-} 
+}

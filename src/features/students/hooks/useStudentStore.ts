@@ -18,6 +18,15 @@ interface StudentState {
   updateStudent: (id: number, student: Partial<Student>) => Promise<void>;
   getStudentClasses: (studentId: number, page?: number) => Promise<void>;
   getStudentAttendance: (studentId: number, page?: number) => Promise<void>;
+  uploadFile: (file: File, options?: {
+    onUploadProgress?: (progressEvent: any) => void;
+    customFormData?: FormData;
+    silent?: boolean;
+  }) => Promise<string | undefined>;
+  getFileUrl: (filename?: string | null, options?: {
+    defaultImage?: string;
+    baseEndpoint?: string;
+  }) => string;
 }
 
 export const useStudentStore = create<StudentState>((set, get) => ({
@@ -171,5 +180,52 @@ export const useStudentStore = create<StudentState>((set, get) => ({
     } finally {
       set({ loading: false });
     }
+  },
+
+  /**
+   * Tải file lên server
+   * @param file File cần tải lên
+   * @param options Tùy chọn cho việc tải lên
+   * @returns Promise chứa đường dẫn file hoặc undefined nếu có lỗi
+   */
+  uploadFile: async (file: File, options?: {
+    onUploadProgress?: (progressEvent: any) => void;
+    customFormData?: FormData;
+    silent?: boolean;
+  }) => {
+    try {
+      const response = await studentService.uploadFile(file, options);
+      if (!options?.silent) {
+        toast.success(response.message || "Tải file lên thành công");
+      }
+      
+      // Lấy tên file từ đường dẫn đầy đủ
+      if (response.path) {
+        // Trích xuất tên file từ đường dẫn (ví dụ: /storage/uploads/1746439474.png -> 1746439474.png)
+        const filename = response.path.split('/').pop();
+        return filename;
+      }
+      
+      return undefined;
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      if (!options?.silent) {
+        toast.error(err?.response?.data?.message || "Lỗi khi tải file lên");
+      }
+      return undefined;
+    }
+  },
+
+  /**
+   * Lấy đường dẫn đến file
+   * @param filename Tên file cần xem
+   * @param options Tùy chọn bổ sung
+   * @returns URL đầy đủ để xem file
+   */
+  getFileUrl: (filename?: string | null, options?: {
+    defaultImage?: string;
+    baseEndpoint?: string;
+  }) => {
+    return studentService.getFileUrl(filename, options);
   }
 })); 

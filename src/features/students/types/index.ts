@@ -5,6 +5,7 @@ export type Student = {
   phone: string;
   email: string;
   address: string;
+  avatar?: string;
   avatar_url?: string;
   user_id: number;
   class_id?: number;
