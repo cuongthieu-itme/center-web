@@ -9,7 +9,8 @@ export const columns: ColumnDef<ClassSession>[] = [
   },
   {
     accessorKey: "class_id",
-    header: "Mã lớp",
+    header: "Tên lớp",
+    cell: ({ row }) => row.original?.class_model.class_name as string,
   },
   {
     accessorKey: "session_date",
