@@ -12,16 +12,27 @@ import { useClassStore } from "../hooks/useClassStore";
 import { Class } from "../types";
 import { classStudentColumns } from "./ClassStudentColumns";
 import AddStudentToClass from "./AddStudentToClass";
+import { Pagination } from "@/components/shared/pagination";
 
 export default function ClassDetail() {
   const { id } = useParams();
-  const { getClassById, loading } = useClassStore();
+  const { getClassById, loading, getStudentsByClass } = useClassStore();
   const { getTeacherById } = useTeacherStore();
   const [classData, setClassData] = useState<Class | null>(null);
   const [teacher, setTeacher] = useState<TeacherDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  
+  // State for students pagination
+  const [students, setStudents] = useState<any[]>([]);
+  const [studentsPagination, setStudentsPagination] = useState({
+    current_page: 1,
+    last_page: 1,
+    total: 0,
+    per_page: 10,
+  });
+  const [studentsLoading, setStudentsLoading] = useState(false);
 
   useEffect(() => {
     const loadClass = async () => {
@@ -39,6 +50,9 @@ export default function ClassDetail() {
               setTeacher(teacherResult);
             }
           }
+          
+          // Load students initially
+          await loadStudents(parseInt(id), 1);
         } else {
           setError("Không tìm thấy lớp học");
         }
@@ -52,6 +66,37 @@ export default function ClassDetail() {
 
     loadClass();
   }, [id, getClassById, getTeacherById]);
+  
+  // Function to load students with pagination
+  const loadStudents = async (classId: number, page: number) => {
+    try {
+      setStudentsLoading(true);
+      const response = await getStudentsByClass(classId, page, studentsPagination.per_page, {});
+      setStudents(response.students.data || []);
+      setStudentsPagination({
+        current_page: response.students.current_page,
+        last_page: response.students.last_page,
+        total: response.students.total,
+        per_page: response.students.per_page,
+      });
+    } catch (error) {
+      console.error("Error loading students:", error);
+    } finally {
+      setStudentsLoading(false);
+    }
+  };
+  
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    if (!id) return;
+    loadStudents(parseInt(id), page);
+  };
+  
+  // Refresh student list (used after adding/removing students)
+  const refreshStudents = () => {
+    if (!id) return;
+    loadStudents(parseInt(id), studentsPagination.current_page);
+  };
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -142,8 +187,8 @@ export default function ClassDetail() {
               <AddStudentToClass
                 classId={classData.id}
                 onSuccess={() => {
-                  // Refresh class data to update student list
-                  getClassById(parseInt(id!));
+                  // Refresh students list after adding
+                  refreshStudents();
                 }}
               />
             </div>
@@ -151,9 +196,20 @@ export default function ClassDetail() {
           <CardContent className="pt-6">
             <DataTable
               columns={classStudentColumns}
-              data={[]}
-              loading={loading}
+              data={students}
+              loading={studentsLoading}
             />
+            
+            {/* Pagination */}
+            {studentsPagination.total > 0 && (
+              <div className="mt-4 flex justify-end">
+                <Pagination
+                  currentPage={studentsPagination.current_page}
+                  totalPages={studentsPagination.last_page}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

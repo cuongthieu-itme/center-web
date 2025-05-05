@@ -17,7 +17,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -44,14 +43,12 @@ import React from "react";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  filterName?: string;
   loading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  filterName = "name",
   loading = false,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -82,22 +79,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="flex justify-between py-3">
-        <div>
-          <Input
-            placeholder={`Tìm kiếm ${filterName}...`}
-            value={
-              (table.getColumn(`${filterName}`)?.getFilterValue() as string) ??
-              ""
-            }
-            onChange={(event) =>
-              table
-                .getColumn(`${filterName}`)
-                ?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
-        </div>
+      <div className="flex justify-end py-3">
         <div className="space-x-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

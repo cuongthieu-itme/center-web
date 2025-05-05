@@ -15,6 +15,7 @@ interface ClassState {
   updateClass: (id: number, classData: Partial<Class>) => Promise<void>;
   addStudentToClass: (classId: number, studentId: number) => Promise<void>;
   removeStudentFromClass: (classId: number, studentId: number) => Promise<void>;
+  getStudentsByClass: (classId: number, page?: number, perPage?: number, filter?: Record<string, any>) => Promise<any>;
 }
 
 export const useClassStore = create<ClassState>((set, get) => ({
@@ -120,6 +121,17 @@ export const useClassStore = create<ClassState>((set, get) => ({
     try {
       const response = await classService.updateClass(id, classData);
       toast.success(response.message);
+      return response;
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
+      throw error;
+    }
+  },
+
+  getStudentsByClass: async (classId: number, page = 1, perPage = 10, filter = {}) => {
+    try {
+      const response = await classService.getStudentsByClass(classId, page, perPage, filter);
       return response;
     } catch (error: unknown) {
       const err = error as { response?: { data?: { message?: string } } };

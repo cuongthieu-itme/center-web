@@ -32,6 +32,18 @@ export const classService = {
     return response.data;
   },
 
+  getStudentsByClass: async (classId: number, page: number = 1, perPage: number = 10, filter: Record<string, any> = {}) => {
+    const queryParams = new URLSearchParams({ page: page.toString(), per_page: perPage.toString() });
+    
+    // Add any additional filter parameters
+    Object.entries(filter).forEach(([key, value]) => {
+      if (value) queryParams.append(key, value.toString());
+    });
+
+    const response = await axiosInstance.get(`/classes/${classId}/students-list?${queryParams}`);
+    return response.data;
+  },
+
   addStudentToClass: async (classId: number, studentId: number) => {
     const response = await axiosInstance.post("/student-classes", {
       class_id: classId,
