@@ -16,7 +16,7 @@ import { Pagination } from "@/components/shared/pagination";
 
 export default function ClassDetail() {
   const { id } = useParams();
-  const { getClassById, loading, getStudentsByClass } = useClassStore();
+  const { getClassById, getStudentsByClass } = useClassStore();
   const { getTeacherById } = useTeacherStore();
   const [classData, setClassData] = useState<Class | null>(null);
   const [teacher, setTeacher] = useState<TeacherDetail | null>(null);

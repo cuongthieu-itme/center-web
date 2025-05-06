@@ -4,6 +4,9 @@ export type ClassSession = {
   session_date: string;
   start_time: string;
   end_time: string;
+  class_model?: {
+    class_name: string;
+  };
 };
 
 export type ClassSessionFormData = {

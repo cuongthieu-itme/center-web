@@ -10,7 +10,7 @@ export const columns: ColumnDef<ClassSession>[] = [
   {
     accessorKey: "class_id",
     header: "Tên lớp",
-    cell: ({ row }) => row.original?.class_model.class_name as string,
+    cell: ({ row }) => row.original?.class_model?.class_name || 'N/A',
   },
   {
     accessorKey: "session_date",

@@ -141,8 +141,8 @@ export default function CreateClass() {
                     <SelectContent>
                       {teachers.map((teacher) => (
                         <SelectItem
-                          key={teacher.id}
-                          value={teacher.id.toString()}
+                          key={teacher?.teacher?.id || `teacher-${teacher?.id}`}
+                          value={(teacher?.teacher?.id || '').toString()}
                         >
                           {teacher.teacher?.full_name || teacher.name}
                         </SelectItem>

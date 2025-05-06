@@ -44,17 +44,22 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   loading?: boolean;
+  filterName?: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   loading = false,
+  filterName,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  
+  // Add search input state for filterName
+  const [searchValue, setSearchValue] = React.useState("");
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
 
@@ -77,9 +82,27 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  // Update filters when search value changes
+  React.useEffect(() => {
+    if (filterName && searchValue) {
+      table.getColumn(filterName)?.setFilterValue(searchValue);
+    }
+  }, [searchValue, filterName, table]);
+
   return (
     <>
-      <div className="flex justify-end py-3">
+      <div className="flex justify-between py-3">
+        {filterName && (
+          <div className="flex items-center">
+            <input
+              type="text"
+              placeholder="Tìm kiếm..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            />
+          </div>
+        )}
         <div className="space-x-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
