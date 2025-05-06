@@ -13,7 +13,7 @@ export const columns: ColumnDef<Class>[] = [
     header: "Tên lớp",
     cell: ({ row }) => {
       // Just render the teacher ID for now - we'll handle teacher name display in the component
-      return row.original.teacher ? `${row.original.teacher.full_name}` : "Chưa phân công";
+      return row.original.teacher ? `${row.original.class_name}` : "Chưa phân công";
     }
   },
   {
