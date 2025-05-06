@@ -21,12 +21,6 @@ export const CommonMenuItems: ItemType[] = [
     url: `/dashboard`,
     icon: LayoutDashboard,
     permissions: ["admin", "manager", "teacher"],
-  },
-  {
-    title: "Điểm danh",
-    url: `/tracker`,
-    icon: Timer,
-    permissions: ["admin", "manager", "teacher"],
   }
 ];
 
