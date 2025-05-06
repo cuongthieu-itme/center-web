@@ -4,8 +4,14 @@ export type ClassSession = {
   session_date: string;
   start_time: string;
   end_time: string;
+  created_at?: string;
+  updated_at?: string;
   class_model?: {
+    id?: number;
     class_name: string;
+    teacher_id?: number;
+    created_at?: string;
+    updated_at?: string;
   };
 };
 

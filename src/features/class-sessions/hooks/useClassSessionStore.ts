@@ -58,6 +58,7 @@ export const useClassSessionStore = create<ClassSessionState>((set, get) => ({
         },
       });
     } catch (error: unknown) {
+      console.error("Error loading class sessions:", error);
       toast.error("Không thể tải danh sách buổi học");
     } finally {
       set({ loading: false });
@@ -81,6 +82,7 @@ export const useClassSessionStore = create<ClassSessionState>((set, get) => ({
         },
       });
     } catch (error: unknown) {
+      console.error("Error loading class sessions by class ID:", error);
       toast.error("Không thể tải danh sách buổi học của lớp");
     } finally {
       set({ loading: false });
@@ -94,6 +96,7 @@ export const useClassSessionStore = create<ClassSessionState>((set, get) => ({
       toast.success(response.message);
       get().getAllClassSessions();
     } catch (error: unknown) {
+      console.error("Error deleting class session:", error);
       toast.error("Không thể xoá buổi học");
     } finally {
       set({ loading: false });
@@ -104,8 +107,12 @@ export const useClassSessionStore = create<ClassSessionState>((set, get) => ({
     set({ loading: true });
     try {
       const response = await classSessionService.getClassSessionById(id);
-      return response.data;
+      console.log('API Response:', response);
+      // Return the full response data object if the response doesn't have a data property
+      // This handles both API formats: {data: {...}} and direct object {...}
+      return response.data || response;
     } catch (error: unknown) {
+      console.error("Error in getClassSessionById:", error);
       toast.error("Không thể tải thông tin buổi học");
       return null;
     } finally {
@@ -120,6 +127,7 @@ export const useClassSessionStore = create<ClassSessionState>((set, get) => ({
       toast.success(response.message);
       get().getAllClassSessions();
     } catch (error: unknown) {
+      console.error("Error updating class session:", error);
       toast.error("Không thể cập nhật buổi học");
     } finally {
       set({ loading: false });

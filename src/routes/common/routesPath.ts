@@ -5,6 +5,7 @@ export const AUTH_ROUTES = {
 export const PROTECTED_ROUTES = {
   DASHBOARD: "/dashboard",
   CLASS_SESSIONS_LIST: "/class-sessions",
+  CLASS_SESSIONS_DETAIL: "/class-sessions/:id",
   USERS_LIST: "/users",
   USERS_DETAIL: "/users/:id",
   USERS_EDIT: "/users/:id/edit",
