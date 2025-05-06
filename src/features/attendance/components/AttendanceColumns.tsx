@@ -47,15 +47,21 @@ export const columns: ColumnDef<Attendance>[] = [
     header: "Học sinh",
     cell: ({ row }) => {
       const student = row.original.student;
+      
+      // Handle case when student is null
+      if (!student) {
+        return <div className="flex items-center gap-3">N/A</div>;
+      }
+      
       return (
         <div className="flex items-center gap-3">
           <Avatar className="h-8 w-8">
             <AvatarImage src={"https://ui-avatars.com/api/?name=" + encodeURIComponent(student.full_name) + "&background=random"} alt={student.full_name} />
-            <AvatarFallback>{student.full_name.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{student.full_name?.charAt(0) || 'N/A'}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
             <span className="font-medium">{student.full_name}</span>
-            <span className="text-sm text-muted-foreground">{student.email}</span>
+            <span className="text-sm text-muted-foreground">{student.email || 'No email'}</span>
           </div>
         </div>
       );
