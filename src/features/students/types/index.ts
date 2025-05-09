@@ -34,13 +34,29 @@ export type StudentPagination = {
 
 export type StudentClass = {
   id: number;
-  name: string;
-  description: string;
-  start_date: string;
-  end_date: string;
-  teacher_id: number;
-  teacher_name?: string;
-  createdAt: string;
+  student_id: number;
+  class_id: number;
+  created_at: string;
+  updated_at: string;
+  class_model: {
+    id: number;
+    class_name: string;
+    teacher_id: number;
+    created_at: string;
+    updated_at: string;
+    teacher: {
+      id: number;
+      full_name: string;
+      phone: string;
+      email: string;
+      specialization: string;
+      avatar_url: string;
+      user_id: number;
+      created_at: string;
+      updated_at: string;
+      deleted_at: string | null;
+    }
+  }
 };
 
 export type StudentAttendance = {

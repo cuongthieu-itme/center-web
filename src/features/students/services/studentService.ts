@@ -93,6 +93,12 @@ export const studentService = {
   changePassword: async (data: ChangePasswordData) => {
     const response = await axiosInstance.post("/students/change-password", data);
     return response.data;
+  },
+
+  // Add new method to get student classes from the API
+  getMyClasses: async (page: number = 1) => {
+    const response = await axiosInstance.get(`/student/classes?page=${page}`);
+    return response.data.classes;
   }
 };
 

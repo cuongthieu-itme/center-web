@@ -8,8 +8,10 @@ interface StudentState {
   students: Student[];
   studentsPagination: StudentPagination;
   studentClasses: StudentClass[];
+  myClasses: StudentClass[];
   studentAttendance: StudentAttendance[];
   studentClassesPagination: StudentPagination;
+  myClassesPagination: StudentPagination;
   studentAttendancePagination: StudentPagination;
   createStudent: (values: StudentFormData) => Promise<void>;
   getAllStudents: (page?: number) => Promise<void>;
@@ -17,6 +19,7 @@ interface StudentState {
   getStudentById: (id: number) => Promise<Student | null>;
   updateStudent: (id: number, student: Partial<Student>) => Promise<void>;
   getStudentClasses: (studentId: number, page?: number) => Promise<void>;
+  getMyClasses: (page?: number) => Promise<void>;
   getStudentAttendance: (studentId: number, page?: number) => Promise<void>;
   uploadFile: (file: File, options?: {
     onUploadProgress?: (progressEvent: any) => void;
@@ -33,6 +36,7 @@ export const useStudentStore = create<StudentState>((set, get) => ({
   loading: false,
   students: [],
   studentClasses: [],
+  myClasses: [],
   studentAttendance: [],
   studentsPagination: {
     current_page: 1,
@@ -43,6 +47,14 @@ export const useStudentStore = create<StudentState>((set, get) => ({
     to: 0,
   },
   studentClassesPagination: {
+    current_page: 1,
+    last_page: 1,
+    total: 0,
+    per_page: 20,
+    from: 0,
+    to: 0,
+  },
+  myClassesPagination: {
     current_page: 1,
     last_page: 1,
     total: 0,
@@ -166,6 +178,30 @@ export const useStudentStore = create<StudentState>((set, get) => ({
       set({ 
         studentAttendance: response.data,
         studentAttendancePagination: {
+          current_page: response.current_page,
+          last_page: response.last_page,
+          total: response.total,
+          per_page: response.per_page,
+          from: response.from,
+          to: response.to,
+        },
+      });
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  getMyClasses: async (page = 1) => {
+    if (get().loading) return;
+    set({ loading: true });
+    try {
+      const response = await studentService.getMyClasses(page);
+      set({ 
+        myClasses: response.data,
+        myClassesPagination: {
           current_page: response.current_page,
           last_page: response.last_page,
           total: response.total,

@@ -78,6 +78,12 @@ export const AttendanceMenuItems: ItemType[] = [
 // Student specific menu items
 export const StudentMenuItems: ItemType[] = [
   {
+    title: "Lớp của tôi",
+    url: "/my-classes",
+    icon: School,
+    permissions: ["student"],
+  },
+  {
     title: "Đổi mật khẩu",
     url: "/change-password",
     icon: Lock,

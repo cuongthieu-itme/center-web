@@ -22,4 +22,5 @@ export const PROTECTED_ROUTES = {
   ATTENDANCE_TRACKER: "/tracker",
   ORDERS_LIST: "/orders",
   CHANGE_PASSWORD: "/change-password",
+  MY_CLASSES: "/my-classes",
 };
