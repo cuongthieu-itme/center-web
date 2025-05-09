@@ -65,18 +65,22 @@ export default function NavMain({
   const studentItems = menuItems.filter(item =>
     item.url.includes("my-classes") ||
     item.url.includes("my-schedule") ||
+    item.url.includes("my-attendance") ||
     item.title === "Đổi mật khẩu"
   );
 
   // Only show education section for non-student roles
   const showEducationSection = roleStr !== "student";
+  
+  // Only show attendance section for non-student roles
+  const showAttendanceSection = roleStr !== "student";
 
   return (
     <SidebarGroup>
       <SidebarMenu className="px-2 py-2">
         {dashboardItems.length > 0 && getMenuSection(dashboardItems, "Dashboard")}
 
-        {attendanceItems.length > 0 && (
+        {attendanceItems.length > 0 && showAttendanceSection && (
           <>
             <Separator className="my-2" />
             {getMenuSection(attendanceItems, "Điểm danh")}

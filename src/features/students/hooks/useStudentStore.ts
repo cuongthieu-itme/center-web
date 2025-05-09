@@ -15,6 +15,8 @@ interface StudentState {
   studentAttendancePagination: StudentPagination;
   mySchedule: StudentSchedule[];
   mySchedulePagination: StudentPagination;
+  myAttendance: any[];
+  myAttendancePagination: StudentPagination;
   createStudent: (values: StudentFormData) => Promise<void>;
   getAllStudents: (page?: number) => Promise<void>;
   deleteStudent: (id: number) => Promise<void>;
@@ -33,6 +35,7 @@ interface StudentState {
     baseEndpoint?: string;
   }) => string;
   getMySchedule: (page?: number) => Promise<void>;
+  getMyAttendance: (page?: number) => Promise<void>;
 }
 
 export const useStudentStore = create<StudentState>((set, get) => ({
@@ -42,6 +45,7 @@ export const useStudentStore = create<StudentState>((set, get) => ({
   myClasses: [],
   studentAttendance: [],
   mySchedule: [],
+  myAttendance: [],
   studentsPagination: {
     current_page: 1,
     last_page: 1,
@@ -75,6 +79,14 @@ export const useStudentStore = create<StudentState>((set, get) => ({
     to: 0,
   },
   mySchedulePagination: {
+    current_page: 1,
+    last_page: 1,
+    total: 0,
+    per_page: 20,
+    from: 0,
+    to: 0,
+  },
+  myAttendancePagination: {
     current_page: 1,
     last_page: 1,
     total: 0,
@@ -299,5 +311,29 @@ export const useStudentStore = create<StudentState>((set, get) => ({
     baseEndpoint?: string;
   }) => {
     return studentService.getFileUrl(filename, options);
+  },
+
+  getMyAttendance: async (page = 1) => {
+    if (get().loading) return;
+    set({ loading: true });
+    try {
+      const response = await studentService.getMyAttendance(page);
+      set({ 
+        myAttendance: response.data,
+        myAttendancePagination: {
+          current_page: response.current_page,
+          last_page: response.last_page,
+          total: response.total,
+          per_page: response.per_page,
+          from: response.from,
+          to: response.to,
+        },
+      });
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
+    } finally {
+      set({ loading: false });
+    }
   }
 })); 

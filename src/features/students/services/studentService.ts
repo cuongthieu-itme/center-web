@@ -105,6 +105,12 @@ export const studentService = {
   getMySchedule: async (page: number = 1) => {
     const response = await axiosInstance.get(`/student/schedule?page=${page}`);
     return response.data.schedule;
+  },
+
+  // Add new method to get student attendance from the API
+  getMyAttendance: async (page: number = 1) => {
+    const response = await axiosInstance.get(`/student/attendance?page=${page}`);
+    return response.data.attendance;
   }
 };
 
