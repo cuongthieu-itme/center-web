@@ -43,7 +43,7 @@ export default function NavMain({
 
   // Organize items by section
   const dashboardItems = menuItems.filter(item =>
-    item.url.includes("dashboard") || item.title === "Tổng quan" || item.title === "Đổi mật khẩu"
+    item.url.includes("dashboard") || item.title === "Tổng quan"
   );
 
   const attendanceItems = menuItems.filter(item =>
@@ -61,6 +61,16 @@ export default function NavMain({
     item.url.includes("users")
   );
 
+  // Add student specific items
+  const studentItems = menuItems.filter(item =>
+    item.url.includes("my-classes") ||
+    item.url.includes("my-schedule") ||
+    item.title === "Đổi mật khẩu"
+  );
+
+  // Only show education section for non-student roles
+  const showEducationSection = roleStr !== "student";
+
   return (
     <SidebarGroup>
       <SidebarMenu className="px-2 py-2">
@@ -73,7 +83,14 @@ export default function NavMain({
           </>
         )}
 
-        {educationItems.length > 0 && (
+        {studentItems.length > 0 && (
+          <>
+            <Separator className="my-2" />
+            {getMenuSection(studentItems, "Học sinh")}
+          </>
+        )}
+
+        {educationItems.length > 0 && showEducationSection && (
           <>
             <Separator className="my-2" />
             {getMenuSection(educationItems, "Quản lý giáo dục")}

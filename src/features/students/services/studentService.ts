@@ -99,6 +99,12 @@ export const studentService = {
   getMyClasses: async (page: number = 1) => {
     const response = await axiosInstance.get(`/student/classes?page=${page}`);
     return response.data.classes;
+  },
+
+  // Add new method to get student schedule from the API
+  getMySchedule: async (page: number = 1) => {
+    const response = await axiosInstance.get(`/student/schedule?page=${page}`);
+    return response.data.schedule;
   }
 };
 

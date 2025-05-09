@@ -84,6 +84,12 @@ export const StudentMenuItems: ItemType[] = [
     permissions: ["student"],
   },
   {
+    title: "Lịch của tôi",
+    url: "/my-schedule",
+    icon: Calendar,
+    permissions: ["student"],
+  },
+  {
     title: "Đổi mật khẩu",
     url: "/change-password",
     icon: Lock,

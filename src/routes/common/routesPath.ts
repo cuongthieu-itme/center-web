@@ -23,4 +23,5 @@ export const PROTECTED_ROUTES = {
   ORDERS_LIST: "/orders",
   CHANGE_PASSWORD: "/change-password",
   MY_CLASSES: "/my-classes",
+  MY_SCHEDULE: "/my-schedule",
 };
