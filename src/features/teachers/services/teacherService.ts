@@ -25,5 +25,17 @@ export const teacherService = {
   deleteTeacher: async (id: number) => {
     const response = await axiosInstance.delete(`/teachers/${id}`);
     return response.data;
+  },
+
+  // Get students for the current teacher
+  getMyStudents: async (page: number = 1) => {
+    const response = await axiosInstance.get(`/teacher/students?page=${page}`);
+    return response.data;
+  },
+
+  // Get classes for the current teacher
+  getMyClasses: async (page: number = 1) => {
+    const response = await axiosInstance.get(`/teacher/classes-schedule?page=${page}`);
+    return response.data;
   }
 }; 

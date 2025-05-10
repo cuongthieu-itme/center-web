@@ -21,6 +21,18 @@ export const CommonMenuItems: ItemType[] = [
     url: `/dashboard`,
     icon: LayoutDashboard,
     permissions: ["admin", "manager", "teacher"],
+  },
+  {
+    title: "Học sinh của tôi",
+    url: "/my-students",
+    icon: Users, 
+    permissions: ["teacher"],
+  },
+  {
+    title: "Lớp học phụ trách",
+    url: "/my-teaching-classes",
+    icon: School,
+    permissions: ["teacher"],
   }
 ];
 
@@ -49,19 +61,19 @@ export const EducationMenuItems: ItemType[] = [
     title: "Học sinh",
     url: "/students",
     icon: Users,
-    permissions: ["admin", "manager", "teacher"],
+    permissions: ["admin", "manager"],
   },
   {
     title: "Lớp học",
     url: "/classes",
     icon: School,
-    permissions: ["admin", "manager", "teacher"],
+    permissions: ["admin", "manager"],
   },
   {
     title: "Buổi học",
     url: "/class-sessions",
     icon: Timer,
-    permissions: ["admin", "manager", "teacher"],
+    permissions: ["admin", "manager"],
   },
 ];
 
@@ -71,7 +83,7 @@ export const AttendanceMenuItems: ItemType[] = [
     title: "Lịch sử điểm danh",
     url: "/attendance",
     icon: ClipboardCheck,
-    permissions: ["admin", "manager", "teacher"],
+    permissions: ["admin", "manager"],
   }
 ];
 

@@ -61,6 +61,11 @@ export default function NavMain({
     item.url.includes("users")
   );
 
+  const teacherItems = menuItems.filter(item =>
+    item.url.includes("my-students") ||
+    item.url.includes("my-teaching-classes")
+  );
+
   // Add student specific items
   const studentItems = menuItems.filter(item =>
     item.url.includes("my-classes") ||
@@ -69,11 +74,14 @@ export default function NavMain({
     item.title === "Đổi mật khẩu"
   );
 
-  // Only show education section for non-student roles
-  const showEducationSection = roleStr !== "student";
+  // Only show education section for admin role, not for student or teacher
+  const showEducationSection = roleStr === "admin";
   
   // Only show attendance section for non-student roles
   const showAttendanceSection = roleStr !== "student";
+
+  // Only show teacher section for teacher role
+  const showTeacherSection = roleStr === "teacher";
 
   return (
     <SidebarGroup>
@@ -105,6 +113,13 @@ export default function NavMain({
           <>
             <Separator className="my-2" />
             {getMenuSection(adminItems, "Quản trị hệ thống")}
+          </>
+        )}
+
+        {teacherItems.length > 0 && (
+          <>
+            <Separator className="my-2" />
+            {showTeacherSection ? getMenuSection(teacherItems, "Giáo viên") : getMenuSection(teacherItems, "Giáo viên")}
           </>
         )}
       </SidebarMenu>

@@ -3,7 +3,7 @@ import { ClassDetail, ClassList } from "@/features/classes";
 import { ClassSessionDetail, ClassSessionList } from "@/features/class-sessions";
 import { ChangePassword, EditStudent, MyClasses, MyClassesView, MyScheduleView, StudentDetail, StudentList } from "@/features/students";
 import MyAttendanceView from "@/features/students/components/MyAttendanceView";
-import { EditTeacher, TeacherDetail, TeacherList } from "@/features/teachers";
+import { EditTeacher, MyClassesView as TeacherClassesView, MyStudentsView, TeacherDetail, TeacherList } from "@/features/teachers";
 import { EditUser, UserDetail, UserList } from "@/features/users";
 import { lazy } from "react";
 import { AUTH_ROUTES, PROTECTED_ROUTES } from "./routesPath";
@@ -46,4 +46,6 @@ export const protectedRoutes = [
   { path: PROTECTED_ROUTES.MY_CLASSES, element: <MyClassesView /> },
   { path: PROTECTED_ROUTES.MY_SCHEDULE, element: <MyScheduleView /> },
   { path: PROTECTED_ROUTES.MY_ATTENDANCE, element: <MyAttendanceView /> },
+  { path: PROTECTED_ROUTES.MY_STUDENTS, element: <MyStudentsView /> },
+  { path: PROTECTED_ROUTES.MY_CLASSES_TEACHER, element: <TeacherClassesView /> },
 ];

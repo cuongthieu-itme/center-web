@@ -9,6 +9,7 @@ import {
   LucideIcon,
   ClipboardCheck,
   ClipboardList,
+  Lock,
 } from "lucide-react";
 
 type NavItem = {
@@ -23,7 +24,7 @@ export const navItems: NavItem[] = [
     title: "Trang chủ",
     href: "/dashboard",
     icon: Home,
-    roles: ["admin", "teacher", "student"],
+    roles: ["admin", "student"],
   },
   {
     title: "Thống kê",
@@ -32,16 +33,16 @@ export const navItems: NavItem[] = [
     roles: ["admin"],
   },
   {
-    title: "Quản lý lớp học",
-    href: "/classes",
+    title: "Lớp học của tôi",
+    href: "/my-classes",
     icon: School,
-    roles: ["admin", "teacher"],
+    roles: ["student"],
   },
   {
-    title: "Quản lý buổi học",
-    href: "/class-sessions",
+    title: "Lịch dạy",
+    href: "/my-schedule",
     icon: CalendarDays,
-    roles: ["admin", "teacher"],
+    roles: [],
   },
   {
     title: "Quản lý giáo viên",
@@ -50,10 +51,10 @@ export const navItems: NavItem[] = [
     roles: ["admin"],
   },
   {
-    title: "Quản lý học sinh",
+    title: "Danh sách học sinh",
     href: "/students",
     icon: Users,
-    roles: ["admin", "teacher"],
+    roles: ["admin"],
   },
   {
     title: "Quản lý người dùng",
@@ -65,12 +66,18 @@ export const navItems: NavItem[] = [
     title: "Điểm danh",
     href: "/attendance",
     icon: ClipboardCheck,
-    roles: ["admin", "teacher"],
+    roles: ["admin"],
   },
   {
-    title: "Theo dõi điểm danh",
-    href: "/tracker",
+    title: "Lịch sử điểm danh",
+    href: "/my-attendance",
     icon: ClipboardList,
-    roles: ["admin", "teacher"],
+    roles: ["student"],
+  },
+  {
+    title: "Đổi mật khẩu",
+    href: "/change-password",
+    icon: Lock,
+    roles: ["student"],
   },
 ];

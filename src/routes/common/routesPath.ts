@@ -25,4 +25,6 @@ export const PROTECTED_ROUTES = {
   MY_CLASSES: "/my-classes",
   MY_SCHEDULE: "/my-schedule",
   MY_ATTENDANCE: "/my-attendance",
+  MY_STUDENTS: "/my-students",
+  MY_CLASSES_TEACHER: "/my-teaching-classes",
 };
