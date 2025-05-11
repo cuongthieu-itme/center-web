@@ -151,7 +151,7 @@ export default function CreateUser() {
                       <SelectContent>
                         <SelectItem value="admin">Quản trị viên</SelectItem>
                         <SelectItem value="teacher">Giáo viên</SelectItem>
-                        <SelectItem value="student">Học sinh</SelectItem>
+                        {/* <SelectItem value="student">Học sinh</SelectItem> */}
                       </SelectContent>
                     </Select>
                   </FormControl>
