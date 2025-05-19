@@ -76,7 +76,7 @@ export default function MyStudentsView() {
   };
 
   const handleRowClick = (student: StudentData) => {
-    setSelectedStudent(student.id);
+    navigate(`/my-students/${student.id}/attendance`);
   };
 
   return (
