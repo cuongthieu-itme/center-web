@@ -3,11 +3,11 @@ import { Teacher, TeacherDetail, TeacherFormData } from "../types";
 
 export const teacherService = {
   getAllTeachers: async (page: number = 1) => {
-    const response = await axiosInstance.get(`/users?role=teacher&page=${page}`);
+    const response = await axiosInstance.get(`/teachers?page=${page}`);
     return response.data;
   },
 
-  getTeacherById: async (id: number): Promise<TeacherDetail> => {
+  getTeacherById: async (id: number) => {
     const response = await axiosInstance.get(`/teachers/${id}`);
     return response.data;
   },
@@ -35,7 +35,12 @@ export const teacherService = {
 
   // Get classes for the current teacher
   getMyClasses: async (page: number = 1) => {
-    const response = await axiosInstance.get(`/teacher/classes-schedule?page=${page}`);
+    const response = await axiosInstance.get(`/teacher/classes?page=${page}`);
     return response.data;
-  }
+  },
+
+  getStudentAttendance: async (studentId: number, page: number = 1) => {
+    const response = await axiosInstance.get(`/teacher/students/${studentId}/attendance?page=${page}`);
+    return response.data;
+  },
 }; 

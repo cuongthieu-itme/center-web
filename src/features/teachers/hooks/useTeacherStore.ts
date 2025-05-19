@@ -2,6 +2,7 @@ import { toast } from "sonner";
 import { create } from "zustand";
 import { teacherService } from "../services/teacherService";
 import { Teacher, TeacherDetail, TeacherFormData, TeacherPagination } from "../types";
+import { StudentAttendance } from "../components/StudentAttendanceColumns";
 
 interface TeacherState {
   loading: boolean;
@@ -32,6 +33,7 @@ interface TeacherState {
     to: number;
   };
   getMyClasses: (page?: number) => Promise<void>;
+  getStudentAttendance: (studentId: number, page: number) => Promise<StudentAttendance[]>;
 }
 
 export const useTeacherStore = create<TeacherState>((set, get) => ({
@@ -194,5 +196,19 @@ export const useTeacherStore = create<TeacherState>((set, get) => ({
     } finally {
       set({ loading: false });
     }
-  }
+  },
+
+  getStudentAttendance: async (studentId: number, page: number = 1) => {
+    set({ loading: true });
+    try {
+      const response = await teacherService.getStudentAttendance(studentId, page);
+      return response.attendance.data;
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message || "An error occurred");
+      return [];
+    } finally {
+      set({ loading: false });
+    }
+  },
 })); 

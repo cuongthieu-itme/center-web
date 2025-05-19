@@ -9,13 +9,19 @@ import { Pagination } from "@/components/shared/pagination";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { Navigate, useNavigate } from "react-router-dom";
 import { PROTECTED_ROUTES } from "@/routes/common/routesPath";
+import { columns as attendanceColumns } from "./StudentAttendanceColumns";
+import { StudentAttendance } from "./StudentAttendanceColumns";
+import { StudentData } from "./MyStudentsColumns";
 
 export default function MyStudentsView() {
-  const { getMyStudents, myStudents, myStudentsPagination, loading } = useTeacherStore();
+  const { getMyStudents, myStudents, myStudentsPagination, loading, getStudentAttendance } = useTeacherStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuthStore();
   const navigate = useNavigate();
+  const [selectedStudent, setSelectedStudent] = useState<number | null>(null);
+  const [studentAttendance, setStudentAttendance] = useState<StudentAttendance[]>([]);
+  const [attendanceLoading, setAttendanceLoading] = useState(false);
 
   // Redirect if user is not a teacher
   if (!user || user.role !== 'teacher') {
@@ -37,6 +43,26 @@ export default function MyStudentsView() {
     fetchData();
   }, [getMyStudents, currentPage]);
 
+  useEffect(() => {
+    const fetchStudentAttendance = async () => {
+      if (selectedStudent) {
+        setAttendanceLoading(true);
+        try {
+          const attendanceData = await getStudentAttendance(selectedStudent, 1);
+          setStudentAttendance(attendanceData);
+          setError(null);
+        } catch (err) {
+          console.error('Error fetching student attendance:', err);
+          setError('Không thể tải dữ liệu điểm danh. Vui lòng thử lại sau.');
+        } finally {
+          setAttendanceLoading(false);
+        }
+      }
+    };
+
+    fetchStudentAttendance();
+  }, [selectedStudent, getStudentAttendance]);
+
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(prevPage => prevPage - 1);
@@ -47,6 +73,10 @@ export default function MyStudentsView() {
     if (currentPage < myStudentsPagination.last_page) {
       setCurrentPage(prevPage => prevPage + 1);
     }
+  };
+
+  const handleRowClick = (student: StudentData) => {
+    setSelectedStudent(student.id);
   };
 
   return (
@@ -71,29 +101,50 @@ export default function MyStudentsView() {
           <p>{error}</p>
         </div>
       ) : (
-        <Card>
-          <CardHeader>
-            <CardTitle>Danh sách học sinh</CardTitle>
-            <CardDescription>
-              Danh sách học sinh trong các lớp bạn đang giảng dạy
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <DataTable 
-              columns={columns} 
-              data={myStudents} 
-              loading={loading} 
-            />
-            
-            {myStudentsPagination.last_page > 1 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={myStudentsPagination.last_page}
-                onPageChange={setCurrentPage}
+        <>
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle>Danh sách học sinh</CardTitle>
+              <CardDescription>
+                Danh sách học sinh trong các lớp bạn đang giảng dạy
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DataTable 
+                columns={columns} 
+                data={myStudents} 
+                loading={loading}
+                onRowClick={handleRowClick}
               />
-            )}
-          </CardContent>
-        </Card>
+              
+              {myStudentsPagination.last_page > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={myStudentsPagination.last_page}
+                  onPageChange={setCurrentPage}
+                />
+              )}
+            </CardContent>
+          </Card>
+
+          {selectedStudent && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Lịch sử điểm danh</CardTitle>
+                <CardDescription>
+                  Lịch sử điểm danh của học sinh
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <DataTable 
+                  columns={attendanceColumns} 
+                  data={studentAttendance} 
+                  loading={attendanceLoading}
+                />
+              </CardContent>
+            </Card>
+          )}
+        </>
       )}
     </div>
   );
